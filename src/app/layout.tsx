@@ -26,7 +26,9 @@ export default function RootLayout({
           <NotificationProvider>
             <AuthProvider>
               <SidebarProvider>
-                <div className="flex h-screen overflow-hidden">{children}</div>
+                <div className="flex-1 ">
+                  <div className="flex h-screen overflow-hidden">{children}</div>
+                </div>
               </SidebarProvider>
             </AuthProvider>
           </NotificationProvider>

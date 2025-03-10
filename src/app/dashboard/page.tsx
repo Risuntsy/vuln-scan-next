@@ -5,23 +5,20 @@ import { Button } from "#/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "#/components/ui/tabs";
 import { AlertCircle, CheckCircle2, Clock, Play, Plus, RefreshCw } from "lucide-react";
 import Link from "next/link";
-import { NEW_PROJECT_ROUTE, PROJECTS_ROUTE } from "#/consts";
+import { DASHBOARD_ROUTE, NEW_PROJECT_ROUTE, PROJECTS_ROUTE } from "#/consts";
+import Header from "#/components/main/header";
 
 export default function Dashboard() {
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-6 border-b">
-        <div>
-          <h1 className="text-2xl font-bold">仪表盘</h1>
-          <p className="text-muted-foreground">系统概览和最近活动</p>
-        </div>
+    <>
+      <Header title="仪表盘" description="系统概览和最近活动">
         <Link href={NEW_PROJECT_ROUTE}>
           <Button className="hover:cursor-pointer">
             <Plus className="w-4 h-4 mr-2" />
             新建扫描任务
           </Button>
         </Link>
-      </div>
+      </Header>
 
       <div className="p-6 space-y-6">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -224,6 +221,6 @@ export default function Dashboard() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </>
   );
 }

@@ -15,6 +15,8 @@ import { Badge } from "#/components/ui/badge";
 import { ChevronDown, Download, ExternalLink, Filter, MoreHorizontal, Search } from "lucide-react";
 import Link from "next/link";
 import { sleep } from "#/libs/utils";
+import Header from "#/components/main/header";
+import { DASHBOARD_ROUTE } from "#/consts";
 
 // 模拟数据 - 体现层级关系
 const webAssets = [
@@ -106,13 +108,12 @@ const webAssets = [
 
 export default function WebAssetsPage() {
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-6 border-b">
-        <div>
-          <h1 className="text-2xl font-bold">Web资产</h1>
-          <p className="text-muted-foreground">管理所有发现的Web应用资产</p>
-        </div>
-      </div>
+    <>
+      <Header
+        title="Web资产"
+        description="管理所有发现的Web应用资产"
+        routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "Web资产" }]}
+      />
 
       <div className="p-6">
         <Card>
@@ -248,6 +249,6 @@ export default function WebAssetsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 }

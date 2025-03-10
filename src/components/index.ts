@@ -1,6 +1,6 @@
 export * from "./theme-provider";
 export * from "./toast";
-export * from "./app-sidebar";
+export * from "./main/app-sidebar";
 
 export * from "./ui/card";
 export * from "./ui/skeleton";

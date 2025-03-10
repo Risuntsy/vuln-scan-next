@@ -21,7 +21,7 @@ import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "#/components/ui/table";
 import { use, useState } from "react";
 import { PROJECTS_ROUTE } from "#/consts";
-// 模拟数据 - 体现层级关系
+
 const project = {
   id: "TASK-1234",
   domain: "example.com",

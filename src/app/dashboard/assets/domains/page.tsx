@@ -20,6 +20,7 @@ import {
   Eye,
   Filter,
   MoreHorizontal,
+  Plus,
   Search,
   X
 } from "lucide-react";
@@ -37,6 +38,8 @@ import {
 } from "#/components/ui/dialog";
 import { Label } from "#/components/ui/label";
 import React from "react";
+import Header from "#/components/main/header";
+import { DASHBOARD_ROUTE, NEW_PROJECT_ROUTE } from "#/consts";
 
 // 模拟数据 - 体现层级关系
 const domains = [
@@ -165,13 +168,12 @@ export default function DomainsPage() {
   const activeFilters = Object.values(filters).filter(Boolean).length;
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-6 border-b">
-        <div>
-          <h1 className="text-2xl font-bold">域名资产</h1>
-          <p className="text-muted-foreground">管理所有发现的域名资产</p>
-        </div>
-      </div>
+    <>
+      <Header
+        title="域名资产"
+        description="管理所有发现的域名资产"
+        routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "域名资产" }]}
+      />
 
       <div className="p-6">
         <Card>
@@ -455,6 +457,6 @@ export default function DomainsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 }

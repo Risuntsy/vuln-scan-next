@@ -27,6 +27,8 @@ import {
 } from "#/components/ui/dialog";
 import { Label } from "#/components/ui/label";
 import React from "react";
+import { DASHBOARD_ROUTE } from "#/consts";
+import Header from "#/components/main/header";
 
 // 模拟数据 - 体现层级关系
 const ips = [
@@ -194,13 +196,12 @@ export default function IPsPage() {
   const activeFilters = Object.values(filters).filter(Boolean).length;
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-6 border-b">
-        <div>
-          <h1 className="text-2xl font-bold">IP资产</h1>
-          <p className="text-muted-foreground">管理所有发现的IP资产</p>
-        </div>
-      </div>
+    <>
+      <Header
+        title="IP资产"
+        description="管理所有发现的IP资产"
+        routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "IP资产" }]}
+      />
 
       <div className="p-6">
         <Card>
@@ -523,6 +524,6 @@ export default function IPsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 }

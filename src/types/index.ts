@@ -1,6 +1,6 @@
 export interface SideBarItem {
   name: string;
   href?: string;
-  icon: React.ElementType;
+  Icon: React.ElementType;
   submenu?: SideBarItem[];
 }

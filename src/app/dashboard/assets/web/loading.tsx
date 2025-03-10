@@ -2,15 +2,11 @@
 
 import { Card, CardContent } from "#/components";
 import { Skeleton } from "#/components";
-import { motion } from "framer-motion";
 
 export default function Loading() {
   return (
-    <motion.div
+    <div
       className="flex flex-col h-full fade-in"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
     >
       <div className="flex items-center justify-between p-6 border-b">
         <div>
@@ -56,6 +52,6 @@ export default function Loading() {
           </CardContent>
         </Card>
       </div>
-    </motion.div>
+    </div>
   );
 }

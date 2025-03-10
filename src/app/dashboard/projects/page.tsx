@@ -23,8 +23,9 @@ import {
   Trash2
 } from "lucide-react";
 import Link from "next/link";
-import { NEW_PROJECT_ROUTE, PROJECTS_ROUTE } from "#/consts";
+import { DASHBOARD_ROUTE, NEW_PROJECT_ROUTE, PROJECTS_ROUTE } from "#/consts";
 import { sleep } from "#/libs/utils";
+import Header from "#/components/main/header";
 
 // 模拟数据
 const projects = [
@@ -94,22 +95,18 @@ const projects = [
 ];
 
 export default async function ProjectsPage() {
-  await sleep(2000);
+  await sleep(1000);
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-6 border-b">
-        <div>
-          <h1 className="text-2xl font-bold">扫描任务</h1>
-          <p className="text-muted-foreground">管理所有扫描任务</p>
-        </div>
+    <>
+      <Header title="扫描任务" description="管理所有扫描任务" routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "扫描任务" }]}>
         <Link href={NEW_PROJECT_ROUTE}>
           <Button>
             <Plus className="w-4 h-4 mr-2" />
             新建扫描任务
           </Button>
         </Link>
-      </div>
+      </Header>
 
       <div className="p-6">
         <Card>
@@ -280,6 +277,6 @@ export default async function ProjectsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 }
