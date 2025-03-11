@@ -11,6 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "#
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "#/components/ui/table";
 import { Badge } from "#/components/ui/badge";
 import { ChevronDown, Download, ExternalLink, Filter, MoreHorizontal, Search } from "lucide-react";
+import {DASHBOARD_ROUTE, PROJECTS_ROUTE, VULNERABILITIES_ROUTE } from "#/consts";
+import Link from "next/link";
+import Header from "#/components/main/header";
 
 // 模拟数据
 const vulnerabilities = [
@@ -108,13 +111,12 @@ const vulnerabilities = [
 
 export default function VulnerabilitiesPage() {
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-6 border-b">
-        <div>
-          <h1 className="text-2xl font-bold">漏洞库</h1>
-          <p className="text-muted-foreground">管理所有发现的安全漏洞</p>
-        </div>
-      </div>
+    <>
+      <Header
+        title="漏洞库"
+        description="管理所有发现的安全漏洞"
+        routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "漏洞库" }]}
+      />
 
       <div className="p-6">
         <Card>
@@ -191,8 +193,10 @@ export default function VulnerabilitiesPage() {
                           <Badge variant="outline">低危</Badge>
                         )}
                       </TableCell>
-                      <TableCell className="max-w-[200px] truncate">{vuln.url}</TableCell>
-                      <TableCell>{vuln.project}</TableCell>
+                      <TableCell className="max-w-[140px] truncate">{vuln.url}</TableCell>
+                      <TableCell>
+                      <Link href={`${PROJECTS_ROUTE}/${vuln.project}`}>{vuln.project}</Link>
+                      </TableCell>
                       <TableCell>
                         {vuln.status === "open" ? (
                           <Badge variant="destructive">未修复</Badge>
@@ -242,6 +246,6 @@ export default function VulnerabilitiesPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 }

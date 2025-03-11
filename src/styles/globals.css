@@ -143,4 +143,12 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  button {
+    @apply hover:cursor-pointer;
+  }
+
+  a {
+    @apply text-primary hover:underline;
+  }
 }
