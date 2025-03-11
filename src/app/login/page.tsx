@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { useAuth } from "#/contexts/auth-context";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
@@ -11,12 +11,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from "#/components/ui/alert";
 import { Lock, User } from "lucide-react";
 
-export default function LoginPage() {
+export default function LoginPage({ searchParams }: { searchParams: Promise<{ redirect?: string }> }) {
   const { login, isLoading } = useAuth();
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("password");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const redirect = use(searchParams).redirect;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ export default function LoginPage() {
       return;
     }
 
-    const success = await login(username, password);
+    const success = await login(username, password, redirect);
     if (!success) {
       setError("用户名或密码错误");
     }

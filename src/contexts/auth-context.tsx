@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, use, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname, useParams, useSearchParams } from "next/navigation";
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from "#/consts";
 import { useNotification } from "#/contexts/notification-context";
@@ -16,19 +16,24 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (username: string, password: string) => Promise<boolean>;
+  login: (username: string, password: string, redirect?: string) => Promise<boolean>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [redirect, setRedirect] = useState<string>();
   const router = useRouter();
   const pathname = usePathname();
-
   const { setNotification } = useNotification();
+
 
   // 检查本地存储中是否有已保存的用户会话
   useEffect(() => {
@@ -52,14 +57,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else if (user && pathname === LOGIN_ROUTE) {
         // 已登录且在登录页面，重定向
         setNotification({ message: "登录成功", type: "success" });
-        // router.push(urlParams.get("redirect") || DASHBOARD_ROUTE);
-        router.push(DASHBOARD_ROUTE);
+        router.push(redirect || DASHBOARD_ROUTE);
       }
     }
   }, [user, isLoading, pathname, router]);
 
   // 登录函数
-  const login = async (username: string, password: string) => {
+  const login = async (username: string, password: string, redirect?: string) => {
     // 模拟API请求
     setIsLoading(true);
     try {
@@ -71,6 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           name: "管理员",
           role: "admin"
         };
+        setRedirect(redirect);
         localStorage.setItem("user", JSON.stringify(user));
         setUser(user);
         setIsLoading(false);
