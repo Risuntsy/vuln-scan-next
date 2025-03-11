@@ -13,7 +13,6 @@ import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { motion } from "framer-motion";
 
 const formSchema = z.object({
   name: z.string().min(1, "指纹名称不能为空"),
@@ -51,12 +50,7 @@ export default function NewFingerprintPage() {
   }
 
   return (
-    <motion.div
-      className="flex flex-col h-full"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div>
       <div className="flex items-center p-6 border-b">
         <Link href="/fingerprints">
           <Button variant="ghost" size="icon" className="mr-4">
@@ -200,6 +194,6 @@ export default function NewFingerprintPage() {
           </CardContent>
         </Card>
       </div>
-    </motion.div>
+    </div>
   );
 }

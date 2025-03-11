@@ -27,7 +27,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
-  const urlParams = useSearchParams();
 
   const { setNotification } = useNotification();
 
@@ -53,7 +52,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else if (user && pathname === LOGIN_ROUTE) {
         // 已登录且在登录页面，重定向
         setNotification({ message: "登录成功", type: "success" });
-        router.push(urlParams.get("redirect") || DASHBOARD_ROUTE);
+        // router.push(urlParams.get("redirect") || DASHBOARD_ROUTE);
+        router.push(DASHBOARD_ROUTE);
       }
     }
   }, [user, isLoading, pathname, router]);
