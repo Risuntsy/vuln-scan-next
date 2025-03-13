@@ -2,10 +2,13 @@
 
 import type React from "react";
 
-import { createContext, use, useContext, useEffect, useState } from "react";
-import { useRouter, usePathname, useParams, useSearchParams } from "next/navigation";
-import { DASHBOARD_ROUTE, LOGIN_ROUTE } from "#/consts";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { DASHBOARD_ROUTE, LOGIN_ROUTE } from "#/config";
 import { useNotification } from "#/contexts/notification-context";
+
+import { useLanguageRoute } from "#/config";
+import { Locale } from "#/i18n";
 interface User {
   id: string;
   username: string;
@@ -22,11 +25,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function AuthProvider({ children, lang }: { children: React.ReactNode; lang: Locale }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [redirect, setRedirect] = useState<string>();
@@ -34,6 +33,7 @@ export function AuthProvider({
   const pathname = usePathname();
   const { setNotification } = useNotification();
 
+  const r = useLanguageRoute(lang);
 
   // 检查本地存储中是否有已保存的用户会话
   useEffect(() => {
@@ -50,14 +50,14 @@ export function AuthProvider({
   // 路由保护逻辑
   useEffect(() => {
     if (!isLoading) {
-      if (!user && pathname !== LOGIN_ROUTE) {
+      if (!user && pathname !== r(LOGIN_ROUTE)) {
         // 未登录且不在登录页面，重定向到登录页
         setNotification({ message: "请先登录", type: "error" });
-        router.push(`${LOGIN_ROUTE}?redirect=${pathname}`);
-      } else if (user && pathname === LOGIN_ROUTE) {
+        router.push(r(LOGIN_ROUTE, { query: { redirect: pathname } }));
+      } else if (user && pathname === r(LOGIN_ROUTE)) {
         // 已登录且在登录页面，重定向
         setNotification({ message: "登录成功", type: "success" });
-        router.push(redirect || DASHBOARD_ROUTE);
+        router.push(redirect || r(DASHBOARD_ROUTE));
       }
     }
   }, [user, isLoading, pathname, router]);
