@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <>
       <AppSidebar items={menuItems} />
-      <main className="flex-1 overflow-y-auto bg-background">
+      <main className="w-full">
         {children}
       </main>
     </>

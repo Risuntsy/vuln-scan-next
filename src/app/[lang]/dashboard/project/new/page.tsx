@@ -11,10 +11,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "#
 import { Checkbox } from "#/components/ui/checkbox";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "#/components/ui/card";
 import { ArrowLeft, Play } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PROJECT_ROUTE } from "#/config";
+import { Header } from "#/components";
+import { DASHBOARD_ROUTE } from "#/config";
+
 
 const formSchema = z.object({
   domain: z.string().min(1, "域名不能为空"),
@@ -62,15 +64,17 @@ export default function NewProjectPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center p-6 border-b">
-        <Button variant="ghost" size="icon" className="mr-4 hover:cursor-pointer" onClick={() => router.back()}>
-          <ArrowLeft className="w-4 h-4" />
-        </Button>
-        <div>
-          <h1 className="text-2xl font-bold">新建扫描任务</h1>
-          <p className="text-muted-foreground">创建新的漏洞扫描任务</p>
+      <Header routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "新建扫描任务" }]}>
+        <div className="flex items-center">
+          <Button variant="ghost" size="icon" className="mr-4 hover:cursor-pointer" onClick={() => router.back()}>
+            <ArrowLeft className="w-4 h-4" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold">新建扫描任务</h1>
+            <p className="text-muted-foreground">创建新的漏洞扫描任务</p>
+          </div>
         </div>
-      </div>
+      </Header>
 
       <div className="p-6">
         <Card className="max-w-2xl mx-auto">

@@ -11,10 +11,10 @@ export default function Dashboard() {
   return (
     <>
       <Header>
-        <div className="flex items-center gap-2 justify-between">
+        <div className="flex items-center gap-2 justify-between w-full">
           <div>
-            <h1>仪表盘</h1>
-            <p>系统概览和最近活动</p>
+            <h1 className="text-2xl font-bold">仪表盘</h1>
+            <p className="text-muted-foreground text-sm">系统概览和最近活动</p>
           </div>
           <Link href={NEW_PROJECT_ROUTE}>
             <Button className="hover:cursor-pointer">

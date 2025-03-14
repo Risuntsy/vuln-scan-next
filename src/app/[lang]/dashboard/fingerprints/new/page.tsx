@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button, successToastWithTitle } from "#/components";
+import { Button, Header, successToastWithTitle } from "#/components";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "#/components";
 import { Input } from "#/components";
 import { Textarea } from "#/components";
@@ -13,6 +13,7 @@ import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { DASHBOARD_ROUTE } from "#/config";
 
 const formSchema = z.object({
   name: z.string().min(1, "指纹名称不能为空"),
@@ -51,17 +52,15 @@ export default function NewFingerprintPage() {
 
   return (
     <div>
-      <div className="flex items-center p-6 border-b">
-        <Link href="/fingerprints">
-          <Button variant="ghost" size="icon" className="mr-4">
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-        </Link>
+      <Header routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "指纹库" }, { name: "添加指纹规则" }]}>
+        <Button variant="ghost" size="icon" className="mr-4" onClick={() => router.back()}>
+          <ArrowLeft className="w-4 h-4" />
+        </Button>
         <div>
           <h1 className="text-2xl font-bold">添加指纹规则</h1>
           <p className="text-muted-foreground">创建新的应用或服务指纹识别规则</p>
         </div>
-      </div>
+      </Header>
 
       <div className="p-6">
         <Card className="max-w-2xl mx-auto">
@@ -172,7 +171,7 @@ export default function NewFingerprintPage() {
                 />
 
                 <div className="flex justify-end gap-3">
-                  <Button variant="outline" type="button" onClick={() => router.push("/fingerprints")}>
+                  <Button variant="outline" type="button" onClick={() => router.back()}>
                     取消
                   </Button>
                   <Button type="submit" disabled={isSubmitting}>

@@ -28,8 +28,8 @@ export default function WebAssetsPage() {
         routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "Web资产" }]}
       >
         <div>
-          <h1>Web资产</h1>
-          <p>管理所有发现的Web应用资产</p>
+          <h1 className="text-2xl font-bold">Web资产</h1>
+          <p className="text-muted-foreground text-sm">管理所有发现的Web应用资产</p>
         </div>
       </Header>
 

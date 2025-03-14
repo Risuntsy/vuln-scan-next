@@ -24,19 +24,17 @@ export default async function RootLayout({
   params
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }> ;
+  params: Promise<{ lang: Locale }>;
 }>) {
   const { lang } = await params;
   return (
     <html lang={lang} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${notoSansSC.variable} antialiased`}>
+      <body className={`${notoSansSC.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NotificationProvider>
             <AuthProvider lang={lang}>
               <SidebarProvider>
-                <div className="flex-1 ">
-                  <div className="flex h-screen overflow-hidden">{children}</div>
-                </div>
+                <div className="flex w-full">{children}</div>
               </SidebarProvider>
             </AuthProvider>
           </NotificationProvider>

@@ -12,12 +12,14 @@ import { Alert, AlertDescription } from "#/components/ui/alert";
 import { Lock, User } from "lucide-react";
 
 export default function LoginPage({ searchParams }: { searchParams: Promise<{ redirect?: string }> }) {
+  const { redirect } = use(searchParams);
+  // use(sleep(randomInt(1000, 2000)));
+
   const { login, isLoading } = useAuth();
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("password");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const redirect = use(searchParams).redirect;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

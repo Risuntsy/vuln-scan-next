@@ -3,7 +3,7 @@ import { Skeleton } from "#/components";
 
 export default async function Loading() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background fade-in">
+    <div className="h-screen w-full flex items-center justify-center bg-background fade-in">
       <div className="w-full max-w-md p-8">
         <Card>
           <CardHeader className="space-y-1">

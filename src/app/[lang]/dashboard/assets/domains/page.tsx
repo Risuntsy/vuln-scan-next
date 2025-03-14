@@ -83,8 +83,8 @@ export default function DomainsPage() {
         routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "域名资产" }]}
       >
         <div>
-          <h1>域名资产</h1>
-          <p>管理所有发现的域名资产</p>
+          <h1 className="text-2xl font-bold">域名资产</h1>
+          <p className="text-muted-foreground text-sm">管理所有发现的域名资产</p>
         </div>
       </Header>
 

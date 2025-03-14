@@ -11,8 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "#
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "#/components/ui/table";
 import { Badge } from "#/components/ui/badge";
 import { ChevronDown, Download, Filter, MoreHorizontal, Plus, Search } from "lucide-react";
-import { DASHBOARD_ROUTE } from "#/config";
+import { DASHBOARD_ROUTE, NEW_FINGERPRINT_ROUTE } from "#/config";
 import Header from "#/components/main/header";
+import Link from "next/link";
 
 // 模拟数据
 const fingerprints = [
@@ -111,18 +112,18 @@ const fingerprints = [
 export default function FingerprintsPage() {
   return (
     <>
-      <Header
-        routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "指纹库" }]}
-      >
-        <div className="flex items-center gap-2 justify-between">
+      <Header routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "指纹库" }]}>
+        <div className="flex items-center gap-2 justify-between w-full">
           <div>
-            <h1>指纹库</h1>
-            <p>管理系统指纹识别规则</p>
+            <h1 className="text-2xl font-bold">指纹库</h1>
+            <p className="text-muted-foreground text-sm">管理系统指纹识别规则</p>
           </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-          添加指纹规则
-        </Button>
+          <Link href={NEW_FINGERPRINT_ROUTE}>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              添加指纹规则
+            </Button>
+          </Link>
         </div>
       </Header>
 

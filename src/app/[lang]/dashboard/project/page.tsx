@@ -51,7 +51,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
   return (
     <>
       <Header routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "扫描任务" }]}>
-        <div className="flex items-center gap-2 justify-between">
+        <div className="flex items-center gap-2 justify-between w-full">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold">扫描任务</h1>
             <p className="text-muted-foreground text-sm">管理所有扫描任务</p>

@@ -24,8 +24,8 @@ export default function VulnerabilitiesPage() {
         routes={[{ name: "仪表盘", href: DASHBOARD_ROUTE }, { name: "漏洞库" }]}
       >
         <div>
-          <h1>漏洞库</h1>
-          <p>管理所有发现的安全漏洞</p>
+          <h1 className="text-2xl font-bold">漏洞库</h1>
+          <p className="text-muted-foreground text-sm">管理所有发现的安全漏洞</p>
         </div>
       </Header>
 
