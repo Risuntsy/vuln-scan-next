@@ -6,8 +6,8 @@ export const DASHBOARD_ROUTE = "/dashboard";
 export const PROJECT_ROUTE = `${DASHBOARD_ROUTE}/project`;
 export const NEW_PROJECT_ROUTE = `${PROJECT_ROUTE}/new`;
 export const PROJECT_DETAIL_ROUTE = `${PROJECT_ROUTE}/:id`;
-export const PROJECT_EDIT_ROUTE = `${PROJECT_ROUTE}/:id/edit`;
-export const PROJECT_REPORT_ROUTE = `${PROJECT_ROUTE}/:id/report`;
+export const PROJECT_EDIT_ROUTE = `${PROJECT_DETAIL_ROUTE}/edit`;
+export const PROJECT_REPORT_ROUTE = `${PROJECT_DETAIL_ROUTE}/report`;
 
 // 资产相关路由
 export const ASSETS_ROUTE = `${DASHBOARD_ROUTE}/assets`;

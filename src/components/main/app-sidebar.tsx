@@ -1,4 +1,7 @@
+"use client";
+
 import {
+  Button,
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -14,27 +17,24 @@ import Link from "next/link";
 import { SideBarItem } from "#/types";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { 
-  ChevronDown, 
-  User, 
-  Settings, 
-  LogOut, 
-  Bell
-} from "lucide-react";
+import { ChevronDown, User, Settings, LogOut, Bell } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "../ui/dropdown-menu";
 import { useAuth } from "#/contexts/auth-context";
+import { cn } from "#/libs/utils";
+import { usePathname } from "next/navigation";
+import { log } from "console";
 
 export function AppSidebar({ items }: { items: SideBarItem[] }) {
   return (
     <Sidebar>
       <SidebarHeader />
-      <SidebarContent>
+      <SidebarContent className="px-2">
         <SidebarList items={items} />
       </SidebarContent>
       <SidebarFooter className="border-t p-4">
@@ -88,14 +88,16 @@ function UserProfile() {
 }
 
 function SidebarList({ items, isSubmenu = false }: { items: SideBarItem[]; isSubmenu?: boolean }) {
+  const pathname = usePathname();
   return (
     <>
       {items.map(({ name, href, Icon, submenu }) => {
+        const isActive = !!href && pathname.endsWith(href);
         // 单个菜单项
         if (href) {
           return isSubmenu ? (
             <SidebarMenuSubItem key={name} className="list-none">
-              <SidebarMenuButton asChild className="pl-2 py-2">
+              <SidebarMenuButton asChild isActive={isActive}>
                 <Link href={href} className="flex items-center gap-2 text-sm">
                   <Icon className="h-4 w-4" />
                   <span>{name}</span>
@@ -104,7 +106,7 @@ function SidebarList({ items, isSubmenu = false }: { items: SideBarItem[]; isSub
             </SidebarMenuSubItem>
           ) : (
             <SidebarMenuItem key={name} className="list-none">
-              <SidebarMenuButton asChild className="py-2">
+              <SidebarMenuButton asChild isActive={isActive}>
                 <Link href={href} className="flex items-center gap-3 text-sm">
                   <Icon className="h-5 w-5" />
                   <span>{name}</span>
@@ -113,21 +115,20 @@ function SidebarList({ items, isSubmenu = false }: { items: SideBarItem[]; isSub
             </SidebarMenuItem>
           );
         }
-        
+
         // 带子菜单的菜单组
         if (submenu) {
           return (
-            <Collapsible key={name} defaultOpen className="group">
+            <Collapsible key={name} defaultOpen>
               <SidebarGroup>
                 <SidebarGroupLabel asChild>
-                  <CollapsibleTrigger className="flex items-center gap-3 py-2 text-sm font-medium hover:bg-muted/50 rounded-md">
-                    <Icon className="h-5 w-5" />
-                    <span>{name}</span>
-                    <ChevronDown className="ml-auto h-4 w-4" />
-                  </CollapsibleTrigger>
+                  <span>
+                    {/* <Icon className="h-2 w-2 mr-2" /> */}
+                    {name}
+                  </span>
                 </SidebarGroupLabel>
-                <CollapsibleContent className="overflow-hidden">
-                  <SidebarGroupContent className="pl-1 border-l border-muted ml-2.5 mt-1">
+                <CollapsibleContent>
+                  <SidebarGroupContent className=" border-l border-muted mt-1">
                     <SidebarList items={submenu} isSubmenu />
                   </SidebarGroupContent>
                 </CollapsibleContent>
@@ -135,7 +136,7 @@ function SidebarList({ items, isSubmenu = false }: { items: SideBarItem[]; isSub
             </Collapsible>
           );
         }
-        
+
         return null;
       })}
     </>

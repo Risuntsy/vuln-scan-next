@@ -10,7 +10,7 @@ import { Badge } from "#/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import { DASHBOARD_ROUTE, useLanguageRoute } from "#/config";
 import Header from "#/components/main/header";
-import ProjectForm from "#/components/page/project-form";
+import ProjectForm from "#/components/project/project-form";
 import { ProjectModel } from "#/model";
 
 export default function ProjectEditPage({ params }: { params: Promise<{ id: string; lang: Locale }> }) {

@@ -38,3 +38,4 @@ export * from "./scroll-area";
 export * from "./switch";
 export * from "./tooltip";
 export * from "./sidebar";
+export * from "./pagination";
