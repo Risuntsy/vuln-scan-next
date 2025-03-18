@@ -59,59 +59,64 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
   return (
     <div className="flex flex-col h-full">
       <Header>
-        <Button variant="ghost" size="icon" className="mr-4" onClick={() => router.back()}>
-          <ArrowLeft className="w-4 h-4" />
-        </Button>
-        <div>
-          <div className="flex items-center">
-            <h1 className="text-2xl font-bold mr-3">{project.domain}</h1>
-            <Badge variant="outline">{project.id}</Badge>
-            {project.status === "completed" ? (
-              <Badge variant="default" className="ml-2">
-                已完成
-              </Badge>
-            ) : project.status === "in-progress" ? (
-              <Badge variant="default" className="ml-2 bg-blue-500">
-                进行中
-              </Badge>
-            ) : project.status === "pending" ? (
-              <Badge variant="outline" className="ml-2">
-                等待中
-              </Badge>
-            ) : (
-              <Badge variant="destructive" className="ml-2">
-                失败
-              </Badge>
-            )}
+        <div className="flex flex-col md:flex-row w-full gap-4 justify-between">
+          <div className="flex">
+            <Button variant="ghost" size="icon" className="mr-2" onClick={() => router.back()}>
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <div className="truncate">
+              <div className="flex items-center flex-wrap gap-2">
+                <h1 className="text-xl md:text-2xl font-bold truncate">{project.domain}</h1>
+                <Badge variant="outline">{project.id}</Badge>
+                {project.status === "completed" ? (
+                  <Badge variant="default">
+                    已完成
+                  </Badge>
+                ) : project.status === "in-progress" ? (
+                  <Badge variant="default" className="bg-blue-500">
+                    进行中
+                  </Badge>
+                ) : project.status === "pending" ? (
+                  <Badge variant="outline">
+                    等待中
+                  </Badge>
+                ) : (
+                  <Badge variant="destructive">
+                    失败
+                  </Badge>
+                )}
+              </div>
+              <p className="text-sm text-muted-foreground">
+                开始时间: {project.startTime} | 结束时间: {project.endTime} | 持续时间: {project.duration}
+              </p>
+            </div>
           </div>
-          <p className="text-muted-foreground">
-            开始时间: {project.startTime} | 结束时间: {project.endTime} | 持续时间: {project.duration}
-          </p>
-        </div>
-        <div className="ml-auto flex items-center gap-2">
-          <Button variant="outline" onClick={() => router.push(`/dashboard/project`)}>
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            项目列表
-          </Button>
-          <Button variant="outline">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            切换项目
-          </Button>
-          {project.status === "in-progress" ? (
-            <Button variant="outline">
-              <StopCircle className="w-4 h-4 mr-2" />
-              停止扫描
+          
+          <div className="flex flex-wrap justify-end items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => router.push(`/dashboard/project`)}>
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">项目列表</span>
             </Button>
-          ) : (
-            <Button variant="outline">
+            <Button variant="outline" size="sm">
               <RefreshCw className="w-4 h-4 mr-2" />
-              重新扫描
+              <span className="hidden sm:inline">切换项目</span>
             </Button>
-          )}
-          <Button>
-            <Download className="w-4 h-4 mr-2" />
-            导出报告
-          </Button>
+            {project.status === "in-progress" ? (
+              <Button variant="outline" size="sm">
+                <StopCircle className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">停止扫描</span>
+              </Button>
+            ) : (
+              <Button variant="outline" size="sm">
+                <RefreshCw className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">重新扫描</span>
+              </Button>
+            )}
+            <Button size="sm">
+              <Download className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">导出报告</span>
+            </Button>
+          </div>
         </div>
       </Header>
 

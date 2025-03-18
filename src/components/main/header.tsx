@@ -19,7 +19,7 @@ export default function Header({
   return (
     <div className="flex flex-col gap-4 p-6 border-b">
       <div className="flex items-center gap-2">
-        <SidebarTrigger />
+        <SidebarTrigger className="border-2" />
         {routes && (
           <Breadcrumb>
             <BreadcrumbList>

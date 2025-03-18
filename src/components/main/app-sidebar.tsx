@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Button,
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -17,7 +16,7 @@ import Link from "next/link";
 import { SideBarItem } from "#/types";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { ChevronDown, User, Settings, LogOut, Bell } from "lucide-react";
+import { User, Settings, LogOut, Bell, ChevronsUpDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,13 +25,11 @@ import {
   DropdownMenuTrigger
 } from "../ui/dropdown-menu";
 import { useAuth } from "#/contexts/auth-context";
-import { cn } from "#/libs/utils";
 import { usePathname } from "next/navigation";
-import { log } from "console";
 
 export function AppSidebar({ items }: { items: SideBarItem[] }) {
   return (
-    <Sidebar>
+    <Sidebar variant="floating">
       <SidebarHeader />
       <SidebarContent className="px-2">
         <SidebarList items={items} />
@@ -61,7 +58,7 @@ function UserProfile() {
               <span className="text-xs text-muted-foreground">admin@example.com</span>
             </div>
           </div>
-          <ChevronDown className="h-4 w-4" />
+          <ChevronsUpDown className="h-4 w-4" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
@@ -116,7 +113,6 @@ function SidebarList({ items, isSubmenu = false }: { items: SideBarItem[]; isSub
           );
         }
 
-        // 带子菜单的菜单组
         if (submenu) {
           return (
             <Collapsible key={name} defaultOpen>
@@ -127,11 +123,9 @@ function SidebarList({ items, isSubmenu = false }: { items: SideBarItem[]; isSub
                     {name}
                   </span>
                 </SidebarGroupLabel>
-                <CollapsibleContent>
-                  <SidebarGroupContent className=" border-l border-muted mt-1">
-                    <SidebarList items={submenu} isSubmenu />
-                  </SidebarGroupContent>
-                </CollapsibleContent>
+                <SidebarGroupContent className=" border-l border-muted mt-1">
+                  <SidebarList items={submenu} isSubmenu />
+                </SidebarGroupContent>
               </SidebarGroup>
             </Collapsible>
           );

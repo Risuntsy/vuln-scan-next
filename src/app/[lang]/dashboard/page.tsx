@@ -84,11 +84,11 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-md font-medium">资产动态</CardTitle>
-              <Link href={ASSETS_ROUTE}>
+              {/* <Link href={ASSETS_ROUTE}>
                 <Button variant="secondary" size="sm">
                   查看全部
                 </Button>
-              </Link>
+              </Link> */}
             </CardHeader>
             <CardContent>
               <div className="relative space-y-0">

@@ -37,9 +37,7 @@ export default function LoginPage({ searchParams }: { searchParams: Promise<{ re
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-background">
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <div className="w-full max-w-md p-8">
+        <>
           <Card>
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl text-center">漏洞扫描系统</CardTitle>
@@ -92,8 +90,6 @@ export default function LoginPage({ searchParams }: { searchParams: Promise<{ re
           <div className="mt-4 text-center text-sm text-muted-foreground">
             提示: 使用用户名 "admin" 和密码 "password" 登录
           </div>
-        </div>
-      </div>
-    </div>
+        </>
   );
 }

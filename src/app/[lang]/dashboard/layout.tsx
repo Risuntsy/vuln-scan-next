@@ -1,8 +1,7 @@
 "use client";
 
-import { AppSidebar } from "#/components";
+import { AppSidebar, SidebarProvider } from "#/components";
 import { useAuth } from "#/contexts/auth-context";
-
 import { menuItems } from "#/config/routes/menu";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -12,13 +11,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return null;
   }
 
-
   return (
-    <>
+    <SidebarProvider>
       <AppSidebar items={menuItems} />
-      <main className="w-full">
-        {children}
-      </main>
-    </>
+      <main className="w-full">{children}</main>
+    </SidebarProvider>
   );
 }

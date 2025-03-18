@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import "#/styles/globals.css";
-import { geistSans } from "#/styles/fonts";
 import { notoSansSC } from "#/styles/fonts";
-import { geistMono } from "#/styles/fonts";
 import { ThemeProvider } from "#/components/theme-provider";
 import { AuthProvider } from "#/contexts/auth-context";
 
 import { NotificationProvider } from "#/contexts/notification-context";
-import { SidebarProvider } from "#/components/ui/sidebar";
 import { Locale, locales } from "#/i18n";
+import { cn } from "#/libs/utils";
 
 export const metadata: Metadata = {
   title: "漏洞扫描系统",
@@ -29,14 +27,10 @@ export default async function RootLayout({
   const { lang } = await params;
   return (
     <html lang={lang} suppressHydrationWarning>
-      <body className={`${notoSansSC.variable} antialiased`}>
+      <body className={cn(notoSansSC.variable, "antialiased")}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NotificationProvider>
-            <AuthProvider lang={lang}>
-              <SidebarProvider>
-                <div className="flex w-full">{children}</div>
-              </SidebarProvider>
-            </AuthProvider>
+            <AuthProvider lang={lang}>{children}</AuthProvider>
           </NotificationProvider>
         </ThemeProvider>
       </body>
