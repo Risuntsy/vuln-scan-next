@@ -97,12 +97,12 @@ export default function SettingsPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-6 border-b">
+      {/* <Header className="mb-6">
         <div>
           <h1 className="text-2xl font-bold">系统设置</h1>
           <p className="text-muted-foreground">配置系统参数和扫描选项</p>
         </div>
-      </div>
+      </Header> */}
 
       <div className="p-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>

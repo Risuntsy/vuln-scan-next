@@ -24,12 +24,12 @@ import {
   StopCircle
 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "#/components/ui/table";
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
 import { Locale } from "#/i18n";
 import { useRouter } from "next/navigation";
 import { projectDetails } from "#/api/mock-data";
 import { useLanguageRoute } from "#/config";
-import { Header } from "#/components";
+import { Header, useSidebar } from "#/components";
 export default function ProjectDetailPage({ params }: { params: Promise<{ id: string; lang: Locale }> }) {
   const { id, lang } = use(params);
   const r = useLanguageRoute(lang);
@@ -37,6 +37,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
   const [expandedIPs, setExpandedIPs] = useState<Record<string, boolean>>({});
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
+  const { setOpen } = useSidebar();
 
   // const project = projectDetails.find((p) => p.id === id);
   const project = projectDetails[0];
@@ -55,6 +56,10 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
       [key]: !prev[key]
     }));
   };
+
+  useEffect(()=>{
+    setOpen(false)
+  }, [])
 
   return (
     <div className="flex flex-col h-full">

@@ -20,7 +20,7 @@ export const menuItems: SideBarItem[] = [
   {
     name: "资产管理",
     Icon: Database,
-    submenu: [
+    subMenu: [
       { name: "域名资产", href: ASSETS_DOMAINS_ROUTE, Icon: Globe },
       { name: "IP资产", href: ASSETS_IPS_ROUTE, Icon: Network },
       { name: "Web资产", href: ASSETS_WEBS_ROUTE, Icon: Layers }

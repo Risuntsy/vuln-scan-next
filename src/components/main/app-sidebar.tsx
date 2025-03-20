@@ -26,6 +26,7 @@ import {
 } from "../ui/dropdown-menu";
 import { useAuth } from "#/contexts/auth-context";
 import { usePathname } from "next/navigation";
+import { cn } from "#/libs/utils";
 
 export function AppSidebar({ items }: { items: SideBarItem[] }) {
   return (
@@ -88,50 +89,49 @@ function SidebarList({ items, isSubmenu = false }: { items: SideBarItem[]; isSub
   const pathname = usePathname();
   return (
     <>
-      {items.map(({ name, href, Icon, submenu }) => {
+      {items.map(({ name, href, Icon, subMenu }) => {
         const isActive = !!href && pathname.endsWith(href);
-        // 单个菜单项
-        if (href) {
-          return isSubmenu ? (
-            <SidebarMenuSubItem key={name} className="list-none">
-              <SidebarMenuButton asChild isActive={isActive}>
-                <Link href={href} className="flex items-center gap-2 text-sm">
+
+        if (subMenu && subMenu.length) {
+          return (
+            <SidebarGroup key={name}>
+              <SidebarGroupLabel asChild>
+                <span>
+                  {/* <Icon className="h-2 w-2 mr-2" /> */}
+                  {name}
+                </span>
+              </SidebarGroupLabel>
+              <SidebarGroupContent className="border-l border-muted mt-1 px-2">
+                <SidebarList items={subMenu} isSubmenu />
+              </SidebarGroupContent>
+            </SidebarGroup>
+          );
+        }
+
+        if (!href) {
+          return null;
+        }
+
+        return (
+          <SidebarMenuSubItem key={name} className="list-none">
+            <SidebarMenuButton asChild isActive={isActive}>
+              {isActive ? (
+                <span className="flex items-center gap-2 text-sm">
+                  <Icon className="h-4 w-4" />
+                  <span>{name}</span>
+                </span>
+              ) : (
+                <Link
+                  href={href}
+                  className={cn("flex items-center gap-2 text-sm", { "text-muted-foreground": isActive })}
+                >
                   <Icon className="h-4 w-4" />
                   <span>{name}</span>
                 </Link>
-              </SidebarMenuButton>
-            </SidebarMenuSubItem>
-          ) : (
-            <SidebarMenuItem key={name} className="list-none">
-              <SidebarMenuButton asChild isActive={isActive}>
-                <Link href={href} className="flex items-center gap-3 text-sm">
-                  <Icon className="h-5 w-5" />
-                  <span>{name}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          );
-        }
-
-        if (submenu) {
-          return (
-            <Collapsible key={name} defaultOpen>
-              <SidebarGroup>
-                <SidebarGroupLabel asChild>
-                  <span>
-                    {/* <Icon className="h-2 w-2 mr-2" /> */}
-                    {name}
-                  </span>
-                </SidebarGroupLabel>
-                <SidebarGroupContent className=" border-l border-muted mt-1">
-                  <SidebarList items={submenu} isSubmenu />
-                </SidebarGroupContent>
-              </SidebarGroup>
-            </Collapsible>
-          );
-        }
-
-        return null;
+              )}
+            </SidebarMenuButton>
+          </SidebarMenuSubItem>
+        );
       })}
     </>
   );
