@@ -17,7 +17,7 @@ export default function Header({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-4 p-6 border-b">
+    <div className="flex flex-col gap-4 p-4 border-b">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="border-2" />
         {routes && (

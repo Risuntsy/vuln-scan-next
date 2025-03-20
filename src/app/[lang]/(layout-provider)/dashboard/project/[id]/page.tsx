@@ -127,96 +127,98 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
 
       <div className="flex h-full">
         {/* 项目侧边栏导航 */}
-        <div className="w-64 border-r p-4 space-y-2">
+        <div className="h-full flex flex-col justify-start border-r border-r-gray-200 dark:border-r-gray-800 shadow-sm">
+        <div className="p-2 flex flex-col sticky top-0 gap-2 max-h-screen">
           <Button
             variant={activeTab === "overview" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("overview")}
           >
-            <Layers className="w-4 h-4 mr-2" />
-            项目概览
+            <Layers className="w-4 h-4" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">项目概览</span>
           </Button>
           <Button
             variant={activeTab === "vulnerabilities" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("vulnerabilities")}
           >
-            <Shield className="w-4 h-4 mr-2" />
-            漏洞管理
+            <Shield className="w-4 h-4 lg:mr-2" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">漏洞管理</span>
           </Button>
           <Button
             variant={activeTab === "ports" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("ports")}
           >
-            <Network className="w-4 h-4 mr-2" />
-            端口信息
+            <Network className="w-4 h-4 lg:mr-2" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">端口信息</span>
           </Button>
           <Button
             variant={activeTab === "websites" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("websites")}
           >
-            <Globe className="w-4 h-4 mr-2" />
-            网站列表
+            <Globe className="w-4 h-4 lg:mr-2" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">网站列表</span>
           </Button>
           <Button
             variant={activeTab === "domains" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("domains")}
           >
-            <Globe className="w-4 h-4 mr-2" />
-            域名列表
+            <Globe className="w-4 h-4 lg:mr-2" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">域名列表</span>
           </Button>
           <Button
             variant={activeTab === "screenshots" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("screenshots")}
           >
-            {/* <Image className="w-4 h-4 mr-2" /> */}
+            {/* <Image className="w-4 h-4 lg:mr-2" /> */}
             {/* TODO: 添加服务截图图标 */}
-            服务截图
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">服务截图</span>
           </Button>
           <Button
             variant={activeTab === "requests" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("requests")}
           >
-            <FileText className="w-4 h-4 mr-2" />
-            请求数据
+            <FileText className="w-4 h-4 lg:mr-2" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">请求数据</span>
           </Button>
           <Button
             variant={activeTab === "emails" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("emails")}
           >
-            <Mail className="w-4 h-4 mr-2" />
-            邮箱列表
+            <Mail className="w-4 h-4 lg:mr-2" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">邮箱列表</span>
           </Button>
           <Button
             variant={activeTab === "leaks" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("leaks")}
           >
-            <AlertTriangle className="w-4 h-4 mr-2" />
-            信息泄露
+            <AlertTriangle className="w-4 h-4 lg:mr-2" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">信息泄露</span>
           </Button>
           <Button
             variant={activeTab === "clues" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("clues")}
           >
-            <Search className="w-4 h-4 mr-2" />
-            资产线索
+            <Search className="w-4 h-4 lg:mr-2" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">资产线索</span>
           </Button>
           <Button
             variant={activeTab === "settings" ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="justify-start group"
             onClick={() => setActiveTab("settings")}
           >
-            <Settings className="w-4 h-4 mr-2" />
-            项目设置
+            <Settings className="w-4 h-4 lg:mr-2" />
+            <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 lg:opacity-100 lg:bg-transparent lg:p-0">项目设置</span>
           </Button>
+        </div>
         </div>
 
         {/* 主内容区域 */}
