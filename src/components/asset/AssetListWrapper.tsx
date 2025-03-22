@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Header, Button } from "#/components";
 import { ArrowLeft } from "lucide-react";
-import { DASHBOARD_ROUTE } from "#/config";
+import { DASHBOARD_ROUTE } from "#/routes";
 
 interface AssetListWrapperProps {
   title: string;

@@ -39,7 +39,7 @@ import {
 import { Label } from "#/components/ui/label";
 import React from "react";
 import Header from "#/components/main/header";
-import { DASHBOARD_ROUTE, NEW_PROJECT_ROUTE } from "#/config";
+import { DASHBOARD_ROUTE } from "#/routes";
 
 import { domains } from "#/api/mock-data";
 

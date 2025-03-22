@@ -2,8 +2,7 @@
 
 import { AppSidebar, useSidebar } from "#/components";
 import { useAuth } from "#/contexts/auth-context";
-import { menuItems } from "#/config/routes/menu";
-import { cn } from "#/libs/utils";
+import { menuItems } from "#/routes";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();

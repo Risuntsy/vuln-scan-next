@@ -1,14 +1,19 @@
-import { Button } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
 import {
+  Input,
+  Button,
+  Card,
+  CardContent,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from "#/components/ui/dropdown-menu";
-import { Input } from "#/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "#/components/ui/select";
-import { Badge } from "#/components/ui/badge";
+  DropdownMenuTrigger,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Badge
+} from "#/components/ui";
 import {
   CheckCircle,
   ChevronDown,
@@ -36,7 +41,7 @@ import {
   PROJECT_REPORT_ROUTE,
   PROJECT_ROUTE,
   useLanguageRoute
-} from "#/config";
+} from "#/routes";
 import { sleep } from "#/libs/utils";
 import Header from "#/components/main/header";
 import { projects } from "#/api/mock-data";
@@ -143,20 +148,21 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
                         {project.id}
                       </Link>
                       <div className="flex items-center space-x-1">
-                        {project.status === "in-progress" ? (
-                          <Button variant="ghost" size="icon" title="停止" className="h-7 w-7">
-                            <StopCircle className="w-4 h-4" />
-                          </Button>
-                        ) : project.status !== "completed" ? (
-                          <Button variant="ghost" size="icon" title="开始" className="h-7 w-7">
-                            <Play className="w-4 h-4" />
-                          </Button>
-                        ) : (
-                          <Button variant="ghost" size="icon" title="重新扫描" className="h-7 w-7">
-                            <RefreshCw className="w-4 h-4" />
-                          </Button>
-                        )}
-                        <div className="hidden sm:flex items-center space-x-1">
+                        <div className="hidden lg:flex items-center space-x-1">
+                          {project.status === "in-progress" ? (
+                            <Button variant="ghost" size="icon" title="停止" className="h-7 w-7">
+                              <StopCircle className="w-4 h-4" />
+                            </Button>
+                          ) : project.status !== "completed" ? (
+                            <Button variant="ghost" size="icon" title="开始" className="h-7 w-7">
+                              <Play className="w-4 h-4" />
+                            </Button>
+                          ) : (
+                            <Button variant="ghost" size="icon" title="重新扫描" className="h-7 w-7">
+                              <RefreshCw className="w-4 h-4" />
+                            </Button>
+                          )}
+
                           <Link href={r(PROJECT_EDIT_ROUTE, { params: { id: project.id } })}>
                             <Button variant="ghost" size="icon" title="编辑" className="h-7 w-7">
                               <Pencil className="w-4 h-4" />
@@ -180,6 +186,22 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
+                            {project.status === "in-progress" ? (
+                              <DropdownMenuItem className="lg:hidden">
+                                <StopCircle className="w-4 h-4 mr-2" />
+                                停止
+                              </DropdownMenuItem>
+                            ) : project.status !== "completed" ? (
+                              <DropdownMenuItem className="lg:hidden">
+                                <Play className="w-4 h-4 mr-2" />
+                                开始
+                              </DropdownMenuItem>
+                            ) : (
+                              <DropdownMenuItem className="lg:hidden">
+                                <RefreshCw className="w-4 h-4 mr-2" />
+                                重新扫描
+                              </DropdownMenuItem>
+                            )}
                             <DropdownMenuItem asChild>
                               <Link href={r(PROJECT_DETAIL_ROUTE, { params: { id: project.id } })}>
                                 <Eye className="w-4 h-4 mr-2" />
@@ -294,14 +316,6 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
 
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sticky bottom-0 bg-background py-3 border-t">
               <div className="text-sm text-muted-foreground">显示 1-7 共 7 条记录</div>
-              <div className="flex items-center space-x-2">
-                <Button variant="outline" size="sm" disabled>
-                  上一页
-                </Button>
-                <Button variant="outline" size="sm" disabled>
-                  下一页
-                </Button>
-              </div>
             </div>
           </CardContent>
         </Card>

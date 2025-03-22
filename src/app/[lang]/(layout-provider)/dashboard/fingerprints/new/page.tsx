@@ -13,7 +13,7 @@ import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { DASHBOARD_ROUTE } from "#/config";
+import { DASHBOARD_ROUTE } from "#/routes";
 
 const formSchema = z.object({
   name: z.string().min(1, "指纹名称不能为空"),

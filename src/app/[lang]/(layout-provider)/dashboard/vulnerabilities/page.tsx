@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "#
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "#/components/ui/table";
 import { Badge } from "#/components/ui/badge";
 import { ChevronDown, Download, ExternalLink, Filter, MoreHorizontal, Search } from "lucide-react";
-import { DASHBOARD_ROUTE, PROJECT_ROUTE } from "#/config";
+import { DASHBOARD_ROUTE, PROJECT_ROUTE } from "#/routes";
 import Link from "next/link";
 import Header from "#/components/main/header";
 

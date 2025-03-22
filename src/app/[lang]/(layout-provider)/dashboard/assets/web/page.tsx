@@ -15,7 +15,7 @@ import { Badge } from "#/components/ui/badge";
 import { ChevronDown, Download, ExternalLink, Filter, MoreHorizontal, Search } from "lucide-react";
 import Link from "next/link";
 import Header from "#/components/main/header";
-import { DASHBOARD_ROUTE } from "#/config";
+import { DASHBOARD_ROUTE } from "#/routes";
 
 import { webAssets } from "#/api/mock-data";
 

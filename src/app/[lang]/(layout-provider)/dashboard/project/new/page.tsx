@@ -13,9 +13,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "#/com
 import { ArrowLeft, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { PROJECT_ROUTE } from "#/config";
+import { PROJECT_ROUTE, DASHBOARD_ROUTE } from "#/routes";
 import { Header } from "#/components";
-import { DASHBOARD_ROUTE } from "#/config";
 
 
 const formSchema = z.object({

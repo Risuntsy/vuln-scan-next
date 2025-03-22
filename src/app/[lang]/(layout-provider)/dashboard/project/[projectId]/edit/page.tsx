@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { use } from "react";
 import { useRouter } from "next/navigation";
 import { Locale } from "#/i18n";
 import { projectDetails } from "#/api";
@@ -8,7 +8,7 @@ import { projectDetails } from "#/api";
 import { Button } from "#/components/ui/button";
 import { Badge } from "#/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
-import { DASHBOARD_ROUTE, PROJECT_ROUTE, useLanguageRoute } from "#/config";
+import { DASHBOARD_ROUTE, PROJECT_ROUTE, useLanguageRoute } from "#/routes";
 import Header from "#/components/main/header";
 import ProjectForm from "#/components/project/project-form";
 import { ProjectModel } from "#/model";

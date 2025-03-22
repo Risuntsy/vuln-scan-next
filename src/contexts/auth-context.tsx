@@ -4,10 +4,9 @@ import type React from "react";
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { DASHBOARD_ROUTE, LOGIN_ROUTE } from "#/config";
+import { DASHBOARD_ROUTE, LOGIN_ROUTE, useLanguageRoute } from "#/routes";
 import { useNotification } from "#/contexts/notification-context";
 
-import { useLanguageRoute } from "#/config";
 import { Locale } from "#/i18n";
 interface User {
   id: string;

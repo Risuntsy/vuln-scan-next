@@ -27,7 +27,7 @@ import {
 } from "#/components/ui/dialog";
 import { Label } from "#/components/ui/label";
 import React from "react";
-import { DASHBOARD_ROUTE } from "#/config";
+import { DASHBOARD_ROUTE } from "#/routes";
 import Header from "#/components/main/header";
 
 import { ips } from "#/api/mock-data";

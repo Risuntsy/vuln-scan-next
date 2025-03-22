@@ -4,7 +4,7 @@ import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { AlertCircle, CheckCircle2, Clock, Play, Plus, RefreshCw } from "lucide-react";
 import Link from "next/link";
-import { NEW_PROJECT_ROUTE, PROJECT_ROUTE, VULNERABILITIES_ROUTE, ASSETS_ROUTE } from "#/config";
+import { NEW_PROJECT_ROUTE, PROJECT_ROUTE, VULNERABILITIES_ROUTE, ASSETS_ROUTE } from "#/routes";
 import Header from "#/components/main/header";
 
 export default function Dashboard() {

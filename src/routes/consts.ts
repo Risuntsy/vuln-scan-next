@@ -6,6 +6,18 @@ export const DASHBOARD_ROUTE = "/dashboard";
 export const PROJECT_ROUTE = `${DASHBOARD_ROUTE}/project`;
 export const NEW_PROJECT_ROUTE = `${PROJECT_ROUTE}/new`;
 export const PROJECT_DETAIL_ROUTE = `${PROJECT_ROUTE}/:id`;
+
+// 具体项目相关路由
+export const PROJECT_OVERVIEW_ROUTE = `${PROJECT_DETAIL_ROUTE}/overview`;
+export const PROJECT_REQUEST_ROUTE = `${PROJECT_DETAIL_ROUTE}/request`;
+export const PROJECT_EMAIL_ROUTE = `${PROJECT_DETAIL_ROUTE}/email`;
+export const PROJECT_LEAK_ROUTE = `${PROJECT_DETAIL_ROUTE}/leak`;
+export const PROJECT_ASSETS_ROUTE = `${PROJECT_DETAIL_ROUTE}/assets`;
+export const PROJECT_SETTINGS_ROUTE = `${PROJECT_DETAIL_ROUTE}/settings`;
+
+
+
+
 export const PROJECT_EDIT_ROUTE = `${PROJECT_DETAIL_ROUTE}/edit`;
 export const PROJECT_REPORT_ROUTE = `${PROJECT_DETAIL_ROUTE}/report`;
 
