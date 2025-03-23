@@ -1,10 +1,15 @@
-import { SidebarProvider } from "#/components";
+import { SidebarProvider, ThemeProvider, TooltipProvider } from "#/components";
 
-export default function LayoutProvider({ children }: { children: React.ReactNode }) {
+export default async function LayoutProvider({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <SidebarProvider>
-      {children}
-    </SidebarProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <SidebarProvider>
+        <TooltipProvider>{children}</TooltipProvider>
+      </SidebarProvider>
+    </ThemeProvider>
   );
 }
-

@@ -1,17 +1,9 @@
 "use client";
 
 import { AppSidebar, useSidebar } from "#/components";
-import { useAuth } from "#/contexts/auth-context";
 import { menuItems } from "#/routes";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
-  const { open } = useSidebar();
-
-  if (!user) {
-    return null;
-  }
-
   return (
     <>
       <AppSidebar items={menuItems} />

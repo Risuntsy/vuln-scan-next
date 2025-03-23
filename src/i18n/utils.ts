@@ -4,7 +4,6 @@ import { locales, defaultLocale, Locale } from "./config";
 import { NextRequest } from "next/server";
 
 export function getLanguagesFromHeader(request: NextRequest): Locale {
-
   return "zh-cn";
 
   // let languages: string[] = [];
@@ -19,6 +18,10 @@ export function getLanguagesFromHeader(request: NextRequest): Locale {
   // return match(languages, locales, defaultLocale);
 }
 
-export function isValidPathname(pathname: string) {
-  return locales.some((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
+export function extractLang(pathname: string) {
+  const lang = pathname.split("/")[1];
+  if (!lang) {
+    return;
+  }
+  return locales.find((locale) => locale === lang);
 }

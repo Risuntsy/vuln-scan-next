@@ -9,12 +9,10 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenuButton,
-  SidebarMenuItem,
   SidebarMenuSubItem
 } from "#/components";
 import Link from "next/link";
 import { SideBarItem } from "#/types";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { User, Settings, LogOut, Bell, ChevronsUpDown } from "lucide-react";
 import {
@@ -24,9 +22,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "../ui/dropdown-menu";
-import { useAuth } from "#/contexts/auth-context";
 import { usePathname } from "next/navigation";
 import { cn } from "#/libs/utils";
+import { logout } from "#/actions";
 
 export function AppSidebar({ items }: { items: SideBarItem[] }) {
   return (
@@ -43,8 +41,6 @@ export function AppSidebar({ items }: { items: SideBarItem[] }) {
 }
 
 function UserProfile() {
-  const auth = useAuth();
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -76,7 +72,7 @@ function UserProfile() {
           <span>通知中心</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-red-500" onClick={auth.logout}>
+        <DropdownMenuItem className="text-red-500" onClick={logout}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>退出登录</span>
         </DropdownMenuItem>

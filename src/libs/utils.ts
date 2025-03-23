@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { cookies, headers } from "next/headers";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -22,8 +23,7 @@ export async function sleep(ms: number): Promise<void> {
  */
 export function randomInt(start: number, end?: number) {
   if (end === undefined) {
-    end = start;
-    start = 0;
+    [start, end] = [0, start];
   }
   return Math.floor(Math.random() * (end - start + 1)) + start;
 }

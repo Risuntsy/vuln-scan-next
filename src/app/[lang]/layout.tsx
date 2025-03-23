@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import "#/styles/globals.css";
 import { notoSansSC } from "#/styles/fonts";
-import { ThemeProvider } from "#/components/theme-provider";
-import { AuthProvider } from "#/contexts/auth-context";
-
-import { NotificationProvider } from "#/contexts/notification-context";
 import { Locale, locales } from "#/i18n";
 import { cn } from "#/libs/utils";
+import { NotificationProvider } from "#/contexts/notification-context";
 
 export const metadata: Metadata = {
   title: "漏洞扫描系统",
@@ -28,11 +25,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <body className={cn(notoSansSC.variable, "antialiased")}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NotificationProvider>
-            <AuthProvider lang={lang}>{children}</AuthProvider>
-          </NotificationProvider>
-        </ThemeProvider>
+        <NotificationProvider>{children}</NotificationProvider>
       </body>
     </html>
   );

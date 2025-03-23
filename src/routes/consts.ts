@@ -16,8 +16,6 @@ export const PROJECT_ASSETS_ROUTE = `${PROJECT_DETAIL_ROUTE}/assets`;
 export const PROJECT_SETTINGS_ROUTE = `${PROJECT_DETAIL_ROUTE}/settings`;
 
 
-
-
 export const PROJECT_EDIT_ROUTE = `${PROJECT_DETAIL_ROUTE}/edit`;
 export const PROJECT_REPORT_ROUTE = `${PROJECT_DETAIL_ROUTE}/report`;
 

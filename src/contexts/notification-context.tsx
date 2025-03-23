@@ -40,7 +40,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   return (
     <NotificationContext.Provider value={{ setNotification }}>
       {children}
-
       <Toaster />
     </NotificationContext.Provider>
   );

@@ -1,23 +1,45 @@
 import { NextResponse } from "next/server";
 import type { MiddlewareConfig, NextRequest } from "next/server";
-import { getLanguagesFromHeader, isValidPathname } from "#/i18n";
+import { extractLang, getLanguagesFromHeader, Locale } from "#/i18n";
+import { checkAuth } from "./actions";
+import { redirect } from "next/navigation";
+import { DASHBOARD_ROUTE, useLanguageRoute } from "./routes";
 
-export function middleware(request: NextRequest) {
-  const locale = getLanguagesFromHeader(request);
+export async function middleware(request: NextRequest) {
+  // i18n
+  let lang: Locale | undefined = extractLang(request.nextUrl.pathname);
+  if (!lang) {
+    const locale = getLanguagesFromHeader(request);
 
-  console.log(locale);
+    const newUrl = new URL(`/${locale}${request.nextUrl.pathname}`, request.url);
+    newUrl.search = request.nextUrl.search;
 
-  if (isValidPathname(request.nextUrl.pathname)) {
-    return NextResponse.next();
+    return NextResponse.redirect(newUrl);
   }
 
-  const newUrl = new URL(`/${locale}${request.nextUrl.pathname}`, request.url);
-  newUrl.search = request.nextUrl.search;
+  const r = useLanguageRoute(lang);
 
-  return NextResponse.redirect(newUrl);
+  // auth
+  const token = request.cookies.get("token")?.value || request.headers.get("authorization");
+
+  if (request.url.endsWith("/login") && token) {
+    if (await checkAuth({ token })) {
+      return NextResponse.redirect(new URL(r(DASHBOARD_ROUTE), request.url));
+    }
+  }
+
+  if (!token && !isInWhiteList(request.url)) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  return NextResponse.next();
 }
 
+function isInWhiteList(pathname: string) {
+  const whiteList = ["/login", "/register", "/"];
 
+  return whiteList.some((item) => pathname.endsWith(item));
+}
 
 export const config: MiddlewareConfig = {
   matcher: [
