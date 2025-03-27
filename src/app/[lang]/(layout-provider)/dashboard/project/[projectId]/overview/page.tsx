@@ -1,200 +1,211 @@
 "use client";
 
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "#/components/ui/table";
-
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
-import { Table } from "#/components/ui/table";
-import { Button } from "#/components/ui/button";
 import { Globe, Network, Layers, Shield, ExternalLink, ChevronDown, ChevronRight } from "lucide-react";
 import { Locale } from "#/i18n";
-import { use, useState } from "react";
-import { useLanguageRoute } from "#/routes";
+import { use } from "react";
 import { projectDetails } from "#/api";
-import { Badge } from "#/components";
+import { ServiceTypeList } from "#/components/overview/ServiceTypeList";
+import ServiceIconGrid from "#/components/overview/ServiceIconGrid";
+import { StatisticsList } from "#/components/overview/StatisticsList";
+
+// 示例数据
+const serviceTypes = [
+  {
+    category: "基础服务",
+    items: [
+      { name: "对象存储服务", count: 12 },
+      { name: "Discuz!", count: 8 },
+      { name: "长亭雷池WAF社区版", count: 5 },
+      { name: "Redis", count: 15 },
+      { name: "MySQL", count: 23 },
+      { name: "MongoDB", count: 7 }
+    ]
+  },
+  {
+    category: "应用服务", 
+    items: [
+      { name: "Vue", count: 45 },
+      { name: "React", count: 38 },
+      { name: "Angular", count: 12 },
+      { name: "鸿翼edoc2 ECM", count: 4 },
+      { name: "Polycom RealPresence Media Suite", count: 3 },
+      { name: "WordPress", count: 27 },
+      { name: "Joomla", count: 8 }
+    ]
+  },
+  {
+    category: "安全服务",
+    items: [
+      { name: "ModSecurity", count: 16 },
+      { name: "Fail2Ban", count: 9 },
+      { name: "Snort IDS", count: 4 },
+      { name: "OpenVAS", count: 2 }
+    ]
+  },
+  {
+    category: "监控服务",
+    items: [
+      { name: "Prometheus", count: 13 },
+      { name: "Grafana", count: 11 },
+      { name: "Zabbix", count: 7 },
+      { name: "Nagios", count: 5 }
+    ]
+  }
+];
+
+const serviceIcons = [
+  {
+    name: "Nginx",
+    icon: "/icons/nginx.svg", 
+    count: 185
+  },
+  {
+    name: "Apache",
+    icon: "/icons/apache.svg",
+    count: 145
+  },
+  {
+    name: "IIS",
+    icon: "/icons/iis.svg",
+    count: 78
+  },
+  {
+    name: "Tomcat",
+    icon: "/icons/tomcat.svg",
+    count: 56
+  },
+  {
+    name: "Node.js",
+    icon: "/icons/nodejs.svg",
+    count: 92
+  },
+  {
+    name: "PHP",
+    icon: "/icons/php.svg",
+    count: 167
+  },
+  {
+    name: "Python",
+    icon: "/icons/python.svg",
+    count: 83
+  },
+  {
+    name: "Java",
+    icon: "/icons/java.svg",
+    count: 124
+  }
+];
+
+const statisticsData = [
+  {
+    title: "网页标题",
+    description: "网站标题统计",
+    items: [
+      { name: "管理后台", count: 45 },
+      { name: "用户中心", count: 38 },
+      { name: "登录页面", count: 67 },
+      { name: "控制面板", count: 29 },
+      { name: "系统设置", count: 23 },
+      { name: "首页", count: 156 }
+    ]
+  },
+  {
+    title: "应用软件",
+    description: "使用的应用软件统计",
+    items: [
+      { name: "Nginx", count: 185 },
+      { name: "Apache", count: 145 },
+      { name: "MySQL", count: 167 },
+      { name: "PHP", count: 134 },
+      { name: "WordPress", count: 89 },
+      { name: "Tomcat", count: 56 }
+    ]
+  },
+  {
+    title: "服务提供商",
+    description: "云服务提供商统计", 
+    items: [
+      { name: "阿里云", count: 234 },
+      { name: "腾讯云", count: 156 },
+      { name: "华为云", count: 89 },
+      { name: "AWS", count: 67 },
+      { name: "Azure", count: 45 },
+      { name: "Google Cloud", count: 34 }
+    ]
+  },
+  {
+    title: "操作系统",
+    description: "服务器操作系统统计",
+    items: [
+      { name: "CentOS", count: 267 },
+      { name: "Ubuntu", count: 189 },
+      { name: "Debian", count: 134 },
+      { name: "Windows Server", count: 78 },
+      { name: "Red Hat", count: 45 }
+    ]
+  }
+];
+
+const overviewItems = [
+  {
+    title: "域名资产",
+    value: 0,
+    icon: Globe,
+    description: "已发现域名"
+  },
+  {
+    title: "IP资产",
+    value: 0,
+    icon: Network,
+    description: "已发现IP地址"
+  },
+  {
+    title: "Web资产",
+    value: 0,
+    icon: Layers,
+    description: "已发现Web应用"
+  },
+  {
+    title: "漏洞",
+    value: 0,
+    icon: Shield,
+    description: "已发现安全漏洞"
+  }
+];
 
 export default function ProjectOverviewPage({ params }: { params: Promise<{ projectId: string; lang: Locale }> }) {
   const { projectId, lang } = use(params);
-  const [expandedDomains, setExpandedDomains] = useState<Record<string, boolean>>({});
-  const [expandedIPs, setExpandedIPs] = useState<Record<string, boolean>>({});
-  const r = useLanguageRoute(lang);
-
   const project = projectDetails[0];
-
-  const toggleDomain = (domainName: string) => {
-    setExpandedDomains((prev) => ({
-      ...prev,
-      [domainName]: !prev[domainName]
-    }));
-  };
-
-  
-  const toggleIP = (domainName: string, ipAddress: string) => {
-    const key = `${domainName}-${ipAddress}`;
-    setExpandedIPs((prev) => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
-  };
 
   return (
     <div className="space-y-6">
+      {/* 总览卡片 */}
       <div className="grid gap-6 md:grid-cols-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">域名资产</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{project.domains.length}</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <Globe className="w-3 h-3 mr-1" />
-              <span>已发现域名</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">IP资产</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{project.domains.length}</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <Network className="w-3 h-3 mr-1" />
-              <span>已发现IP地址</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Web资产</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{project.domains.length}</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <Layers className="w-3 h-3 mr-1" />
-              <span>已发现Web应用</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">漏洞</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{project.vulnerabilities.length}</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <Shield className="w-3 h-3 mr-1" />
-              <span>已发现安全漏洞</span>
-            </div>
-          </CardContent>
-        </Card>
+        {overviewItems.map(({ title, value, icon: Icon, description }) => (
+          <Card key={title}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">{title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{value}</div>
+              <div className="flex items-center text-xs text-muted-foreground">
+                <Icon className="w-3 h-3 mr-1" />
+                <span>{description}</span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>资产概览</CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="space-y-4">
-            {project.domains.map((domain, domainIndex) => (
-              <div key={`domain-${domainIndex}`} className="border rounded-md">
-                <div
-                  className="flex items-center p-4 cursor-pointer hover:bg-muted/50"
-                  onClick={() => toggleDomain(domain.name)}
-                >
-                  <Button variant="ghost" size="icon" className="mr-2">
-                    {expandedDomains[domain.name] ? (
-                      <ChevronDown className="h-4 w-4" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4" />
-                    )}
-                  </Button>
-                  <Globe className="w-4 h-4 mr-2" />
-                  <span className="font-medium">{domain.name}</span>
-                  <Badge variant={domain.status === "active" ? "default" : "outline"} className="ml-2">
-                    {domain.status === "active" ? "活跃" : "未活跃"}
-                  </Badge>
-                </div>
+      {/* 服务类型列表 */}
+      <ServiceTypeList data={serviceTypes} lang={lang} />
 
-                {expandedDomains[domain.name] && (
-                  <div className="border-t p-4 pl-12">
-                    {domain.ips.map((ip, ipIndex) => (
-                      <div key={`ip-${domainIndex}-${ipIndex}`} className="border rounded-md mb-4 last:mb-0">
-                        <div
-                          className="flex items-center p-4 cursor-pointer hover:bg-muted/50"
-                          onClick={() => toggleIP(domain.name, ip.address)}
-                        >
-                          <Button variant="ghost" size="icon" className="mr-2">
-                            {expandedIPs[`${domain.name}-${ip.address}`] ? (
-                              <ChevronDown className="h-4 w-4" />
-                            ) : (
-                              <ChevronRight className="h-4 w-4" />
-                            )}
-                          </Button>
-                          <Network className="w-4 h-4 mr-2" />
-                          <span className="font-medium">{ip.address}</span>
-                          <Badge variant="outline" className="ml-2">
-                            {ip.ports.length} 个端口
-                          </Badge>
-                        </div>
+      {/* 服务图标网格 */}
+      <ServiceIconGrid data={serviceIcons} lang={lang} />
 
-                        {expandedIPs[`${domain.name}-${ip.address}`] && (
-                          <div className="border-t p-4">
-                            <div className="rounded-md border">
-                              <Table>
-                                <TableHeader>
-                                  <TableRow>
-                                    <TableHead>端口</TableHead>
-                                    <TableHead>服务</TableHead>
-                                    <TableHead>Web应用</TableHead>
-                                    <TableHead className="text-right">操作</TableHead>
-                                  </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                  {ip.ports.map((port, portIndex) => (
-                                    <TableRow key={`port-${domainIndex}-${ipIndex}-${portIndex}`}>
-                                      <TableCell>{port.number}</TableCell>
-                                      <TableCell>{port.service}</TableCell>
-                                      <TableCell>
-                                        {port.web ? (
-                                          <div>
-                                            <div className="font-medium">{port.web.title}</div>
-                                            <div className="text-xs text-muted-foreground">{port.web.server}</div>
-                                          </div>
-                                        ) : (
-                                          <span className="text-muted-foreground">-</span>
-                                        )}
-                                      </TableCell>
-                                      <TableCell className="text-right">
-                                        {port.web && (
-                                          <Button variant="ghost" size="icon" asChild>
-                                            <a
-                                              href={`http${port.number === 443 ? "s" : ""}://${domain.name}${
-                                                port.number !== 80 && port.number !== 443 ? `:${port.number}` : ""
-                                              }`}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                            >
-                                              <ExternalLink className="w-4 h-4" />
-                                            </a>
-                                          </Button>
-                                        )}
-                                      </TableCell>
-                                    </TableRow>
-                                  ))}
-                                </TableBody>
-                              </Table>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* 统计列表 */}
+      <StatisticsList data={statisticsData} lang={lang} />
     </div>
   );
 }

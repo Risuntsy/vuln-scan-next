@@ -1,6 +1,8 @@
 "use server";
 
+import { Locale } from "#/i18n";
 import { apiClient } from "#/libs/api-client";
+import { LOGIN_ROUTE, useLanguageRoute } from "#/routes";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -25,9 +27,9 @@ export async function handleLogin(formData: FormData) {
   }
 }
 
-export async function logout() {
+export async function logout(lang: Locale) {
   (await cookies()).delete("token");
-  redirect("/");
+  redirect(useLanguageRoute(lang)(LOGIN_ROUTE));
 }
 
 export async function login(data: { username: string; password: string }) {
@@ -44,12 +46,12 @@ export async function changePassword(data: { newPassword: string }) {
 }
 
 export async function checkAuth({ token }: { token: string }) {
-  const response = (await apiClient.get("/system/version", {
+  const response = await apiClient.get<Response>("/system/version", {
     responseType: "raw",
     headers: {
       Authorization: token
     }
-  })) as Response;
+  });
 
   if (response.status === 200) {
     return true;

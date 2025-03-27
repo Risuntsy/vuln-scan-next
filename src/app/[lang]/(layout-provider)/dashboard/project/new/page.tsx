@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "#/com
 import { ArrowLeft, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { PROJECT_ROUTE, DASHBOARD_ROUTE } from "#/routes";
+import { PROJECT_LIST_ROUTE, DASHBOARD_ROUTE } from "#/routes";
 import { Header } from "#/components";
 
 
@@ -57,7 +57,7 @@ export default function NewProjectPage() {
     // 模拟API请求
     setTimeout(() => {
       setIsSubmitting(false);
-      router.push(PROJECT_ROUTE);
+      router.push(PROJECT_LIST_ROUTE);
     }, 1500);
   }
 

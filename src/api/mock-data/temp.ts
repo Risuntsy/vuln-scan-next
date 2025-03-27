@@ -247,7 +247,17 @@ export const webAssets = [
   }
 ];
 
-export const projects = [
+type ProjectStatus = "completed" | "in-progress" | "pending" | "failed";
+
+export const projects: {
+  id: string;
+  domain: string;
+  status: ProjectStatus;
+  assets: { domains: number; ips: number; webs: number };
+  vulnerabilities: { high: number; medium: number; low: number };
+  createdAt: string;
+  updatedAt: string;
+}[]= [
   {
     id: "TASK-1234",
     domain: "example.com",

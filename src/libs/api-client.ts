@@ -238,7 +238,7 @@ export class ApiClient {
    * @param url 请求URL
    * @param config 请求配置
    */
-  async get<T>(url: string, config?: Omit<RequestConfig, "url" | "method">): Promise<BaseResponse<T> | T | Response> {
+  async get<T>(url: string, config?: Omit<RequestConfig, "url" | "method">): Promise<T> {
     return this.request<T>({ ...config, url, method: "GET" });
   }
 

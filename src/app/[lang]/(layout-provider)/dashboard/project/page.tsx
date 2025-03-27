@@ -22,6 +22,7 @@ import {
   Eye,
   FileText,
   Filter,
+  LucideIcon,
   MoreHorizontal,
   Pencil,
   Play,
@@ -36,10 +37,10 @@ import Link from "next/link";
 import {
   DASHBOARD_ROUTE,
   NEW_PROJECT_ROUTE,
-  PROJECT_DETAIL_ROUTE,
   PROJECT_EDIT_ROUTE,
+  PROJECT_OVERVIEW_ROUTE,
   PROJECT_REPORT_ROUTE,
-  PROJECT_ROUTE,
+  PROJECT_LIST_ROUTE,
   useLanguageRoute
 } from "#/routes";
 import { sleep } from "#/libs/utils";
@@ -47,9 +48,99 @@ import Header from "#/components/main/header";
 import { projects } from "#/api/mock-data";
 import { Locale } from "#/i18n";
 
+const PAGE_SIZES = [10, 20, 50, 100];
+
+const FILTER_OPTIONS = [
+  { label: "全部任务" },
+  { label: "进行中" },
+  { label: "已完成" },
+  { label: "等待中" },
+  { label: "失败" }
+];
+
+type ProjectStatus = "completed" | "in-progress" | "pending" | "failed";
+
+const PROJECT_ACTIONS = [
+  {
+    key: "stop",
+    icon: StopCircle,
+    title: "停止",
+    showWhen: (status: ProjectStatus) => status === "in-progress"
+  },
+  {
+    key: "start",
+    icon: Play,
+    title: "开始",
+    showWhen: (status: ProjectStatus) => status !== "completed" && status !== "in-progress"
+  },
+  {
+    key: "rescan",
+    icon: RefreshCw,
+    title: "重新扫描",
+    showWhen: (status: ProjectStatus) => status === "completed"
+  },
+  {
+    key: "edit",
+    icon: Pencil,
+    title: "编辑",
+    route: PROJECT_EDIT_ROUTE
+  },
+  {
+    key: "view",
+    icon: Eye,
+    title: "查看详情",
+    route: PROJECT_OVERVIEW_ROUTE
+  },
+  {
+    key: "report",
+    icon: FileText,
+    title: "导出报告",
+    route: PROJECT_REPORT_ROUTE
+  }
+];
+
+const STATUS_BADGES: Record<
+  ProjectStatus,
+  {
+    icon: LucideIcon;
+    label: string;
+    variant: "default" | "secondary" | "destructive" | "outline";
+    className?: string;
+    animate?: boolean;
+  }
+> = {
+  completed: {
+    icon: CheckCircle,
+    label: "已完成",
+    variant: "default"
+  },
+  "in-progress": {
+    icon: RefreshCw,
+    label: "进行中",
+    variant: "default",
+    className: "bg-blue-400 hover:bg-blue-500",
+    animate: true
+  },
+  pending: {
+    icon: Clock,
+    label: "等待中",
+    variant: "outline"
+  },
+  failed: {
+    icon: XCircle,
+    label: "失败",
+    variant: "destructive"
+  }
+};
+
+const ASSET_TYPES = [
+  { key: "domains", label: "域名" },
+  { key: "ips", label: "IP" },
+  { key: "webs", label: "Web" }
+];
+
 export default async function ProjectsPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params;
-
   const r = useLanguageRoute(lang);
   await sleep(1000);
 
@@ -89,11 +180,9 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-[200px]">
-                      <DropdownMenuItem>全部任务</DropdownMenuItem>
-                      <DropdownMenuItem>进行中</DropdownMenuItem>
-                      <DropdownMenuItem>已完成</DropdownMenuItem>
-                      <DropdownMenuItem>等待中</DropdownMenuItem>
-                      <DropdownMenuItem>失败</DropdownMenuItem>
+                      {FILTER_OPTIONS.map((option) => (
+                        <DropdownMenuItem key={option.label}>{option.label}</DropdownMenuItem>
+                      ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -104,10 +193,11 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
                         <SelectValue placeholder="每页行数" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="10">10</SelectItem>
-                        <SelectItem value="20">20</SelectItem>
-                        <SelectItem value="50">50</SelectItem>
-                        <SelectItem value="100">100</SelectItem>
+                        {PAGE_SIZES.map((size) => (
+                          <SelectItem key={size} value={size.toString()}>
+                            {size}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <Button variant="outline" size="icon" className="ml-1">
@@ -130,55 +220,55 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
               {projects.map((project) => (
                 <Card key={project.id} className="overflow-hidden border hover:shadow-md transition-shadow">
-                  {project.status === "in-progress" ? (
-                    <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 h-1.5 animate-gradient-x bg-[length:400%_100%] transition-colors duration-1000"></div>
-                  ) : project.status === "completed" ? (
-                    <div className="bg-primary h-1.5"></div>
-                  ) : project.status === "pending" ? (
-                    <div className="bg-yellow-500 h-1.5"></div>
-                  ) : (
-                    <div className="bg-destructive h-1.5"></div>
-                  )}
+                  <div
+                    className={`h-1.5 ${
+                      project.status === "in-progress"
+                        ? "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient-x bg-[length:400%_100%] transition-colors duration-1000"
+                        : project.status === "completed"
+                          ? "bg-primary"
+                          : project.status === "pending"
+                            ? "bg-yellow-500"
+                            : "bg-destructive"
+                    }`}
+                  ></div>
+
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start mb-3">
                       <Link
-                        href={`${PROJECT_ROUTE}/${project.id}`}
+                        href={r(PROJECT_OVERVIEW_ROUTE, { params: { projectId: project.id } })}
                         className="text-primary hover:underline font-medium truncate max-w-[150px]"
                       >
                         {project.id}
                       </Link>
                       <div className="flex items-center space-x-1">
                         <div className="hidden lg:flex items-center space-x-1">
-                          {project.status === "in-progress" ? (
-                            <Button variant="ghost" size="icon" title="停止" className="h-7 w-7">
-                              <StopCircle className="w-4 h-4" />
-                            </Button>
-                          ) : project.status !== "completed" ? (
-                            <Button variant="ghost" size="icon" title="开始" className="h-7 w-7">
-                              <Play className="w-4 h-4" />
-                            </Button>
-                          ) : (
-                            <Button variant="ghost" size="icon" title="重新扫描" className="h-7 w-7">
-                              <RefreshCw className="w-4 h-4" />
-                            </Button>
-                          )}
+                          {PROJECT_ACTIONS.map((action) => {
+                            if (!action.showWhen || action.showWhen(project.status)) {
+                              const Icon = action.icon;
+                              const content = (
+                                <Button
+                                  key={action.key}
+                                  variant="ghost"
+                                  size="icon"
+                                  title={action.title}
+                                  className="h-7 w-7"
+                                >
+                                  <Icon className="w-4 h-4" />
+                                </Button>
+                              );
 
-                          <Link href={r(PROJECT_EDIT_ROUTE, { params: { id: project.id } })}>
-                            <Button variant="ghost" size="icon" title="编辑" className="h-7 w-7">
-                              <Pencil className="w-4 h-4" />
-                            </Button>
-                          </Link>
-                          <Link href={r(PROJECT_DETAIL_ROUTE, { params: { id: project.id } })}>
-                            <Button variant="ghost" size="icon" title="查看详情" className="h-7 w-7">
-                              <Eye className="w-4 h-4" />
-                            </Button>
-                          </Link>
-                          <Link href={r(PROJECT_REPORT_ROUTE, { params: { id: project.id } })}>
-                            <Button variant="ghost" size="icon" title="导出报告" className="h-7 w-7">
-                              <FileText className="w-4 h-4" />
-                            </Button>
-                          </Link>
+                              return action.route ? (
+                                <Link key={action.key} href={r(action.route, { params: { id: project.id } })}>
+                                  {content}
+                                </Link>
+                              ) : (
+                                content
+                              );
+                            }
+                            return null;
+                          })}
                         </div>
+
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon" className="h-7 w-7">
@@ -186,40 +276,29 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            {project.status === "in-progress" ? (
-                              <DropdownMenuItem className="lg:hidden">
-                                <StopCircle className="w-4 h-4 mr-2" />
-                                停止
-                              </DropdownMenuItem>
-                            ) : project.status !== "completed" ? (
-                              <DropdownMenuItem className="lg:hidden">
-                                <Play className="w-4 h-4 mr-2" />
-                                开始
-                              </DropdownMenuItem>
-                            ) : (
-                              <DropdownMenuItem className="lg:hidden">
-                                <RefreshCw className="w-4 h-4 mr-2" />
-                                重新扫描
-                              </DropdownMenuItem>
-                            )}
-                            <DropdownMenuItem asChild>
-                              <Link href={r(PROJECT_DETAIL_ROUTE, { params: { id: project.id } })}>
-                                <Eye className="w-4 h-4 mr-2" />
-                                查看详情
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <Link href={r(PROJECT_EDIT_ROUTE, { params: { id: project.id } })}>
-                                <Pencil className="w-4 h-4 mr-2" />
-                                编辑任务
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <Link href={r(PROJECT_REPORT_ROUTE, { params: { id: project.id } })}>
-                                <FileText className="w-4 h-4 mr-2" />
-                                导出报告
-                              </Link>
-                            </DropdownMenuItem>
+                            {PROJECT_ACTIONS.map((action) => {
+                              if (!action.showWhen || action.showWhen(project.status)) {
+                                const Icon = action.icon;
+                                const content = (
+                                  <DropdownMenuItem
+                                    key={action.key}
+                                    className={action.key === "delete" ? "text-destructive" : ""}
+                                  >
+                                    <Icon className="w-4 h-4 mr-2" />
+                                    {action.title}
+                                  </DropdownMenuItem>
+                                );
+
+                                return action.route ? (
+                                  <Link key={action.key} href={r(action.route, { params: { id: project.id } })}>
+                                    {content}
+                                  </Link>
+                                ) : (
+                                  content
+                                );
+                              }
+                              return null;
+                            })}
                             <DropdownMenuItem className="text-destructive">
                               <Trash2 className="w-4 h-4 mr-2" />
                               删除任务
@@ -237,31 +316,20 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
                     <div className="flex flex-col sm:flex-row justify-between mb-3 gap-2">
                       <div>
                         <div className="text-sm text-muted-foreground mb-1">状态</div>
-                        {project.status === "completed" ? (
-                          <Badge variant="default">
-                            <CheckCircle className="w-3 h-3 mr-1" />
-                            已完成
-                          </Badge>
-                        ) : project.status === "in-progress" ? (
-                          <Badge variant="default" className="bg-blue-400 hover:bg-blue-500">
-                            <div className="flex items-center">
-                              <div className="animate-spin mr-1">
-                                <RefreshCw className="w-3 h-3" />
+                        {(() => {
+                          const status = STATUS_BADGES[project.status];
+                          const Icon = status.icon;
+                          return (
+                            <Badge variant={status.variant} className={status.className}>
+                              <div className="flex items-center">
+                                <div className={status.animate ? "animate-spin mr-1" : "mr-1"}>
+                                  <Icon className="w-3 h-3" />
+                                </div>
+                                <span>{status.label}</span>
                               </div>
-                              <span>进行中</span>
-                            </div>
-                          </Badge>
-                        ) : project.status === "pending" ? (
-                          <Badge variant="outline">
-                            <Clock className="w-3 h-3 mr-1" />
-                            等待中
-                          </Badge>
-                        ) : (
-                          <Badge variant="destructive">
-                            <XCircle className="w-3 h-3 mr-1" />
-                            失败
-                          </Badge>
-                        )}
+                            </Badge>
+                          );
+                        })()}
                       </div>
                       <div>
                         <div className="text-sm text-muted-foreground mb-1">创建时间</div>
@@ -270,18 +338,12 @@ export default async function ProjectsPage({ params }: { params: Promise<{ lang:
                     </div>
 
                     <div className="grid grid-cols-3 gap-2 mb-3">
-                      <div className="bg-muted rounded-md p-2 text-center">
-                        <div className="text-xs text-muted-foreground">域名</div>
-                        <div className="font-medium">{project.assets.domains}</div>
-                      </div>
-                      <div className="bg-muted rounded-md p-2 text-center">
-                        <div className="text-xs text-muted-foreground">IP</div>
-                        <div className="font-medium">{project.assets.ips}</div>
-                      </div>
-                      <div className="bg-muted rounded-md p-2 text-center">
-                        <div className="text-xs text-muted-foreground">Web</div>
-                        <div className="font-medium">{project.assets.webs}</div>
-                      </div>
+                      {ASSET_TYPES.map((type) => (
+                        <div key={type.key} className="bg-muted rounded-md p-2 text-center">
+                          <div className="text-xs text-muted-foreground">{type.label}</div>
+                          <div className="font-medium">{project.assets[type.key as keyof typeof project.assets]}</div>
+                        </div>
+                      ))}
                     </div>
 
                     <div>

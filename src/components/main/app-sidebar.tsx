@@ -25,8 +25,9 @@ import {
 import { usePathname } from "next/navigation";
 import { cn } from "#/libs/utils";
 import { logout } from "#/actions";
+import { Locale } from "#/i18n";
 
-export function AppSidebar({ items }: { items: SideBarItem[] }) {
+export default function AppSidebar({ items, lang }: { items: SideBarItem[]; lang: Locale }) {
   return (
     <Sidebar variant="floating">
       <SidebarHeader />
@@ -34,13 +35,13 @@ export function AppSidebar({ items }: { items: SideBarItem[] }) {
         <SidebarList items={items} />
       </SidebarContent>
       <SidebarFooter className="border-t p-4">
-        <UserProfile />
+        <UserProfile lang={lang} />
       </SidebarFooter>
     </Sidebar>
   );
 }
 
-function UserProfile() {
+function UserProfile({ lang }: { lang: Locale }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -72,7 +73,7 @@ function UserProfile() {
           <span>通知中心</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-red-500" onClick={logout}>
+        <DropdownMenuItem className="text-red-500" onClick={() => logout(lang)}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>退出登录</span>
         </DropdownMenuItem>

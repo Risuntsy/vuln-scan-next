@@ -8,7 +8,7 @@ import { projectDetails } from "#/api";
 import { Button } from "#/components/ui/button";
 import { Badge } from "#/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
-import { DASHBOARD_ROUTE, PROJECT_ROUTE, useLanguageRoute } from "#/routes";
+import { DASHBOARD_ROUTE, PROJECT_LIST_ROUTE, useLanguageRoute } from "#/routes";
 import Header from "#/components/main/header";
 import ProjectForm from "#/components/project/project-form";
 import { ProjectModel } from "#/model";
@@ -31,7 +31,7 @@ export default function ProjectEditPage({ params }: { params: Promise<{ id: stri
       <Header
         routes={[
           { name: "仪表盘", href: DASHBOARD_ROUTE },
-          { name: "扫描任务", href: r(PROJECT_ROUTE) },
+          { name: "扫描任务", href: r(PROJECT_LIST_ROUTE) },
           { name: "编辑项目" }
         ]}
       >

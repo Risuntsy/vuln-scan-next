@@ -19,18 +19,18 @@ export async function middleware(request: NextRequest) {
 
   const r = useLanguageRoute(lang);
 
-  // auth
-  const token = request.cookies.get("token")?.value || request.headers.get("authorization");
+  // // auth
+  // const token = request.cookies.get("token")?.value || request.headers.get("authorization");
 
-  if (request.url.endsWith("/login") && token) {
-    if (await checkAuth({ token })) {
-      return NextResponse.redirect(new URL(r(DASHBOARD_ROUTE), request.url));
-    }
-  }
+  // if (request.url.endsWith("/login") && token) {
+  //   if (await checkAuth({ token })) {
+  //     return NextResponse.redirect(new URL(r(DASHBOARD_ROUTE), request.url));
+  //   }
+  // }
 
-  if (!token && !isInWhiteList(request.url)) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  // if (!token && !isInWhiteList(request.url)) {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
 
   return NextResponse.next();
 }

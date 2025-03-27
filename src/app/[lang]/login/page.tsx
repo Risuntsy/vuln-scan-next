@@ -10,7 +10,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "#/com
 import { Alert, AlertDescription } from "#/components/ui/alert";
 import { Lock, User } from "lucide-react";
 import { Locale } from "#/i18n";
-import { handleLogin } from "#/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useNotification } from "#/contexts/notification-context";
 import { DASHBOARD_ROUTE, useLanguageRoute } from "#/routes";
@@ -54,11 +53,17 @@ export default function LoginPage({
           <CardDescription className="text-center">请输入您的账号和密码登录</CardDescription>
         </CardHeader>
         <CardContent>
-          <form
+          {/* <form
             onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
               e.preventDefault();
               const formAction = async () => await handleLogin(new FormData(e.currentTarget));
               await submitAction(formAction);
+            }}
+          > */}
+          <form
+            onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
+              e.preventDefault();
+              router.push(r(DASHBOARD_ROUTE));
             }}
           >
             {error && (

@@ -4,10 +4,146 @@ import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { AlertCircle, CheckCircle2, Clock, Play, Plus, RefreshCw } from "lucide-react";
 import Link from "next/link";
-import { NEW_PROJECT_ROUTE, PROJECT_ROUTE, VULNERABILITIES_ROUTE, ASSETS_ROUTE } from "#/routes";
+import { NEW_PROJECT_ROUTE, PROJECT_LIST_ROUTE } from "#/routes";
 import Header from "#/components/main/header";
 
 export default function Dashboard() {
+  const overviewCards = [
+    {
+      title: "总扫描任务",
+      value: "128",
+      footer: (
+        <p className="text-xs text-muted-foreground">
+          较上月 <span className="text-green-500">+12.5%</span>
+        </p>
+      )
+    },
+    {
+      title: "已发现漏洞",
+      value: "356",
+      footer: (
+        <div className="flex items-center text-xs text-muted-foreground">
+          <Badge variant="destructive" className="mr-1">
+            高危 24
+          </Badge>
+          <Badge className="mr-1 text-white bg-yellow-500 hover:bg-yellow-400">中危 78</Badge>
+          <Badge variant="outline">低危 254</Badge>
+        </div>
+      )
+    },
+    {
+      title: "已发现资产",
+      value: "1,892",
+      footer: (
+        <div className="flex items-center text-xs text-muted-foreground">
+          <span className="mr-2">域名: 245</span>
+          <span className="mr-2">IP: 1,024</span>
+          <span>Web: 623</span>
+        </div>
+      )
+    },
+    {
+      title: "活跃扫描",
+      value: "5",
+      footer: (
+        <div className="flex items-center text-xs text-muted-foreground">
+          <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
+          <span>正在进行中</span>
+        </div>
+      )
+    }
+  ];
+
+  const assetTimeline = [
+    {
+      title: "发现新域名",
+      subtitle: "dev.example.com",
+      alertTitle: "关联到主域名 example.com",
+      alertDesc: "发现3个开放端口，2个Web服务",
+      time: "10分钟前"
+    },
+    {
+      title: "新增IP资产",
+      subtitle: "192.168.1.25",
+      alertTitle: "内网服务器",
+      alertDesc: "运行MySQL数据库，开放3306端口",
+      time: "1小时前"
+    },
+    {
+      title: "资产变更",
+      subtitle: "api.example.com",
+      alertTitle: "服务更新",
+      alertDesc: "检测到Nginx版本从1.18.0更新到1.20.1",
+      time: "3小时前"
+    },
+    {
+      title: "新增Web应用",
+      subtitle: "shop.example.com",
+      alertTitle: "电子商务应用",
+      alertDesc: "使用WordPress平台，检测到15个插件",
+      time: "昨天"
+    }
+  ];
+
+  const recentTasks = [
+    {
+      icon: Play,
+      iconColor: "text-green-500",
+      title: "全面资产扫描",
+      subtitle: "example.com",
+      status: "进行中",
+      time: "2分钟前"
+    },
+    {
+      icon: CheckCircle2,
+      iconColor: "text-green-500",
+      title: "漏洞扫描",
+      subtitle: "api.example.org",
+      status: "已完成",
+      time: "1小时前",
+      statusClass: "bg-green-50"
+    },
+    {
+      icon: Clock,
+      iconColor: "text-yellow-500",
+      title: "定期安全检查",
+      subtitle: "internal.example.net",
+      status: "计划中",
+      time: "明天"
+    }
+  ];
+
+  const latestVulnerabilities: {
+    iconColor: string;
+    title: string;
+    subtitle: string;
+    severity: string;
+    badgeVariant?: "destructive" | "outline" | "default" | "secondary";
+    badgeClass?: string;
+  }[] = [
+    {
+      iconColor: "text-red-500",
+      title: "SQL注入漏洞",
+      subtitle: "app.example.com/login",
+      severity: "高危",
+      badgeVariant: "destructive"
+    },
+    {
+      iconColor: "text-yellow-500",
+      title: "跨站脚本攻击 (XSS)",
+      subtitle: "blog.example.com/comments",
+      severity: "中危",
+      badgeClass: "bg-yellow-500 hover:bg-yellow-400"
+    },
+    {
+      iconColor: "text-blue-500",
+      title: "信息泄露",
+      subtitle: "api.example.com/v1/users",
+      severity: "低危",
+      badgeVariant: "outline"
+    }
+  ];
+
   return (
     <>
       <Header>
@@ -24,139 +160,53 @@ export default function Dashboard() {
           </Link>
         </div>
       </Header>
+
       <div className="p-6 space-y-6">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">总扫描任务</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">128</div>
-              <p className="text-xs text-muted-foreground">
-                较上月 <span className="text-green-500">+12.5%</span>
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">已发现漏洞</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">356</div>
-              <div className="flex items-center text-xs text-muted-foreground">
-                <Badge variant="destructive" className="mr-1">
-                  高危 24
-                </Badge>
-                <Badge className="mr-1 text-white bg-yellow-500 hover:bg-yellow-400">中危 78</Badge>
-                <Badge variant="outline">低危 254</Badge>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">已发现资产</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">1,892</div>
-              <div className="flex items-center text-xs text-muted-foreground">
-                <span className="mr-2">域名: 245</span>
-                <span className="mr-2">IP: 1,024</span>
-                <span>Web: 623</span>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">活跃扫描</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">5</div>
-              <div className="flex items-center text-xs text-muted-foreground">
-                <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
-                <span>正在进行中</span>
-              </div>
-            </CardContent>
-          </Card>
+          {overviewCards.map((card, index) => (
+            <Card key={index}>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{card.value}</div>
+                {card.footer}
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* 资产动态时间线 */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-md font-medium">资产动态</CardTitle>
-              {/* <Link href={ASSETS_ROUTE}>
-                <Button variant="secondary" size="sm">
-                  查看全部
-                </Button>
-              </Link> */}
             </CardHeader>
             <CardContent>
               <div className="relative space-y-0">
-                {/* 时间线连接线 */}
                 <div className="absolute left-1.5 top-2 bottom-0 w-0.5 bg-border"></div>
-
-                {/* 时间线项目 */}
-                <div className="relative pl-6 pb-6">
-                  <div className="absolute left-0 top-1 w-3 h-3 rounded-full bg-primary"></div>
-                  <div className="flex flex-col">
-                    <p className="text-sm font-medium">发现新域名</p>
-                    <p className="text-xs text-muted-foreground mb-1">dev.example.com</p>
-                    <Alert className="py-2">
-                      <AlertTitle className="text-xs font-medium">关联到主域名 example.com</AlertTitle>
-                      <AlertDescription className="text-xs">发现3个开放端口，2个Web服务</AlertDescription>
-                    </Alert>
-                    <p className="text-xs text-muted-foreground mt-1">10分钟前</p>
+                {assetTimeline.map((item, index) => (
+                  <div key={index} className={`relative pl-6 ${index !== assetTimeline.length - 1 ? "pb-6" : ""}`}>
+                    <div className="absolute left-0 top-1 w-3 h-3 rounded-full bg-primary"></div>
+                    <div className="flex flex-col">
+                      <p className="text-sm font-medium">{item.title}</p>
+                      <p className="text-xs text-muted-foreground mb-1">{item.subtitle}</p>
+                      <Alert className="py-2">
+                        <AlertTitle className="text-xs font-medium">{item.alertTitle}</AlertTitle>
+                        <AlertDescription className="text-xs">{item.alertDesc}</AlertDescription>
+                      </Alert>
+                      <p className="text-xs text-muted-foreground mt-1">{item.time}</p>
+                    </div>
                   </div>
-                </div>
-
-                <div className="relative pl-6 pb-6">
-                  <div className="absolute left-0 top-1 w-3 h-3 rounded-full bg-primary"></div>
-                  <div className="flex flex-col">
-                    <p className="text-sm font-medium">新增IP资产</p>
-                    <p className="text-xs text-muted-foreground mb-1">192.168.1.25</p>
-                    <Alert className="py-2">
-                      <AlertTitle className="text-xs font-medium">内网服务器</AlertTitle>
-                      <AlertDescription className="text-xs">运行MySQL数据库，开放3306端口</AlertDescription>
-                    </Alert>
-                    <p className="text-xs text-muted-foreground mt-1">1小时前</p>
-                  </div>
-                </div>
-
-                <div className="relative pl-6 pb-6">
-                  <div className="absolute left-0 top-1 w-3 h-3 rounded-full bg-primary"></div>
-                  <div className="flex flex-col">
-                    <p className="text-sm font-medium">资产变更</p>
-                    <p className="text-xs text-muted-foreground mb-1">api.example.com</p>
-                    <Alert className="py-2">
-                      <AlertTitle className="text-xs font-medium">服务更新</AlertTitle>
-                      <AlertDescription className="text-xs">检测到Nginx版本从1.18.0更新到1.20.1</AlertDescription>
-                    </Alert>
-                    <p className="text-xs text-muted-foreground mt-1">3小时前</p>
-                  </div>
-                </div>
-
-                <div className="relative pl-6">
-                  <div className="absolute left-0 top-1 w-3 h-3 rounded-full bg-primary"></div>
-                  <div className="flex flex-col">
-                    <p className="text-sm font-medium">新增Web应用</p>
-                    <p className="text-xs text-muted-foreground mb-1">shop.example.com</p>
-                    <Alert className="py-2">
-                      <AlertTitle className="text-xs font-medium">电子商务应用</AlertTitle>
-                      <AlertDescription className="text-xs">使用WordPress平台，检测到15个插件</AlertDescription>
-                    </Alert>
-                    <p className="text-xs text-muted-foreground mt-1">昨天</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </CardContent>
           </Card>
 
-          {/* 最近任务和最新漏洞 */}
           <div className="space-y-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-md font-medium">最近任务</CardTitle>
-                <Link href={PROJECT_ROUTE}>
+                <Link href={PROJECT_LIST_ROUTE}>
                   <Button variant="secondary" size="sm">
                     查看全部
                   </Button>
@@ -164,96 +214,47 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Play className="w-4 h-4 mr-2 text-green-500" />
-                      <div>
-                        <p className="text-sm font-medium">全面资产扫描</p>
-                        <p className="text-xs text-muted-foreground">example.com</p>
+                  {recentTasks.map((task, index) => (
+                    <div key={index} className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <task.icon className={`w-4 h-4 mr-2 ${task.iconColor}`} />
+                        <div>
+                          <p className="text-sm font-medium">{task.title}</p>
+                          <p className="text-xs text-muted-foreground">{task.subtitle}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <Badge variant="outline" className={`mr-2 ${task.statusClass || ""}`}>
+                          {task.status}
+                        </Badge>
+                        <p className="text-xs text-muted-foreground">{task.time}</p>
                       </div>
                     </div>
-                    <div className="flex items-center">
-                      <Badge variant="outline" className="mr-2">
-                        进行中
-                      </Badge>
-                      <p className="text-xs text-muted-foreground">2分钟前</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
-                      <div>
-                        <p className="text-sm font-medium">漏洞扫描</p>
-                        <p className="text-xs text-muted-foreground">api.example.org</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <Badge variant="outline" className="mr-2 bg-green-50">
-                        已完成
-                      </Badge>
-                      <p className="text-xs text-muted-foreground">1小时前</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Clock className="w-4 h-4 mr-2 text-yellow-500" />
-                      <div>
-                        <p className="text-sm font-medium">定期安全检查</p>
-                        <p className="text-xs text-muted-foreground">internal.example.net</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <Badge variant="outline" className="mr-2">
-                        计划中
-                      </Badge>
-                      <p className="text-xs text-muted-foreground">明天</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardHeader className="flex flex-row items-center pb-2">
                 <CardTitle className="text-md font-medium">最新漏洞</CardTitle>
-                <Link href={VULNERABILITIES_ROUTE}>
-                  <Button variant="secondary" size="sm">
-                    查看全部
-                  </Button>
-                </Link>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start">
-                      <AlertCircle className="w-4 h-4 mr-2 mt-0.5 text-red-500" />
-                      <div>
-                        <p className="text-sm font-medium">SQL注入漏洞</p>
-                        <p className="text-xs text-muted-foreground">app.example.com/login</p>
+                  {latestVulnerabilities.map((vuln, index) => (
+                    <div key={index} className="flex items-start justify-between">
+                      <div className="flex items-start">
+                        <AlertCircle className={`w-4 h-4 mr-2 mt-0.5 ${vuln.iconColor}`} />
+                        <div>
+                          <p className="text-sm font-medium">{vuln.title}</p>
+                          <p className="text-xs text-muted-foreground">{vuln.subtitle}</p>
+                        </div>
                       </div>
+                      <Badge variant={vuln.badgeVariant} className={vuln.badgeClass}>
+                        {vuln.severity}
+                      </Badge>
                     </div>
-                    <Badge variant="destructive">高危</Badge>
-                  </div>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start">
-                      <AlertCircle className="w-4 h-4 mr-2 mt-0.5 text-yellow-500" />
-                      <div>
-                        <p className="text-sm font-medium">跨站脚本攻击 (XSS)</p>
-                        <p className="text-xs text-muted-foreground">blog.example.com/comments</p>
-                      </div>
-                    </div>
-                    <Badge className="bg-yellow-500 hover:bg-yellow-400">中危</Badge>
-                  </div>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start">
-                      <AlertCircle className="w-4 h-4 mr-2 mt-0.5 text-blue-500" />
-                      <div>
-                        <p className="text-sm font-medium">信息泄露</p>
-                        <p className="text-xs text-muted-foreground">api.example.com/v1/users</p>
-                      </div>
-                    </div>
-                    <Badge variant="outline">低危</Badge>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>

@@ -5,7 +5,6 @@ import { Badge } from "#/components/ui/badge";
 import {
   AlertTriangle,
   ArrowLeft,
-  ChevronLeft,
   Download,
   FileText,
   Globe,
@@ -16,28 +15,35 @@ import {
   Search,
   Settings,
   Shield,
-  StopCircle
+  StopCircle,
+  ChevronsUpDown
 } from "lucide-react";
 import { use, useState, useEffect } from "react";
 import { Locale } from "#/i18n";
 import { useRouter, usePathname } from "next/navigation";
 import { projectDetails } from "#/api/mock-data";
-import { useLanguageRoute } from "#/routes";
-import { Header, useSidebar } from "#/components";
+import { PROJECT_LIST_ROUTE, PROJECT_OVERVIEW_ROUTE, useLanguageRoute } from "#/routes";
+import { Header, Select, SelectContent, SelectItem, SelectTrigger, useSidebar } from "#/components";
 import Link from "next/link";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandSeparator } from "#/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "#/components/ui/popover";
+import { cn } from "#/libs/utils";
+
 export default function ProjectDetailPage({
   params,
   children
 }: {
-  params: Promise<{ id: string; lang: Locale }>;
+  params: Promise<{ projectId: string; lang: Locale }>;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { id, lang } = use(params);
+  const { projectId, lang } = use(params);
+  const [open, setOpen] = useState(false);
+
   const r = useLanguageRoute(lang);
 
   const router = useRouter();
-  const { setOpen } = useSidebar();
+  const { setOpen: setSidebarOpen } = useSidebar();
 
   // const project = projectDetails.find((p) => p.id === id);
   const project = projectDetails[0];
@@ -101,7 +107,7 @@ export default function ProjectDetailPage({
   ];
 
   useEffect(() => {
-    setOpen(false);
+    setSidebarOpen(false);
   }, []);
 
   return (
@@ -109,24 +115,48 @@ export default function ProjectDetailPage({
       <Header>
         <div className="flex flex-col md:flex-row w-full gap-4 justify-between">
           <div className="flex">
-            <Button variant="ghost" size="icon" className="mr-2" onClick={() => router.back()}>
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
+            <Link href={r(PROJECT_LIST_ROUTE)}>
+              <Button variant="ghost" size="icon" className="mr-2">
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
+            </Link>
             <div className="truncate">
               <div className="flex items-center flex-wrap gap-2">
                 <h1 className="text-xl md:text-2xl font-bold truncate">{project.domain}</h1>
-                <Badge variant="outline">{project.id}</Badge>
-                {project.status === "completed" ? (
-                  <Badge variant="default">已完成</Badge>
-                ) : project.status === "in-progress" ? (
-                  <Badge variant="default" className="bg-blue-500">
-                    进行中
-                  </Badge>
-                ) : project.status === "pending" ? (
-                  <Badge variant="outline">等待中</Badge>
-                ) : (
-                  <Badge variant="destructive">失败</Badge>
-                )}
+                <div className="flex items-center gap-2">
+                  <Select
+                    value={projectId}
+                    onValueChange={(value) => {
+                      router.push(r(PROJECT_OVERVIEW_ROUTE, { params: { projectId: value } }));
+                    }}
+                  >
+                    <SelectTrigger className="w-auto">
+                      <Badge variant="outline" className="cursor-pointer">{project.id}</Badge>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {projectDetails.length <= 1 ? (
+                        <span className="px-2 py-1 text-sm text-muted-foreground">未找到项目</span>
+                      ) : (
+                        projectDetails.map((p) => (
+                          <SelectItem key={p.id} value={p.id}>
+                            <Badge variant="outline">{p.id}</Badge>
+                          </SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                  {project.status === "completed" ? (
+                    <Badge variant="default">已完成</Badge>
+                  ) : project.status === "in-progress" ? (
+                    <Badge variant="default" className="bg-blue-500">
+                      进行中
+                    </Badge>
+                  ) : project.status === "pending" ? (
+                    <Badge variant="outline">等待中</Badge>
+                  ) : (
+                    <Badge variant="destructive">失败</Badge>
+                  )}
+                </div>
               </div>
               <p className="text-sm text-muted-foreground">
                 开始时间: {project.startTime} | 结束时间: {project.endTime} | 持续时间: {project.duration}
@@ -135,14 +165,6 @@ export default function ProjectDetailPage({
           </div>
 
           <div className="flex flex-wrap justify-end items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => router.push(`/dashboard/project`)}>
-              <ChevronLeft className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">项目列表</span>
-            </Button>
-            <Button variant="outline" size="sm">
-              <RefreshCw className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">切换项目</span>
-            </Button>
             {project.status === "in-progress" ? (
               <Button variant="outline" size="sm">
                 <StopCircle className="w-4 h-4 mr-2" />
@@ -164,16 +186,16 @@ export default function ProjectDetailPage({
 
       <div className="flex h-full">
         {/* 项目侧边栏导航 */}
-        <div className="h-full flex flex-col justify-start border-r border-r-gray-200 dark:border-r-gray-800 shadow-sm">
+        <div className="flex justify-start border-r border-r-gray-200 dark:border-r-gray-800 shadow-sm">
           <div className="p-2 flex flex-col sticky top-0 gap-2 max-h-screen">
             {sidebarItems.map((item) => (
-              <Link href={r(`/dashboard/project/${id}/${item.key}`)} key={item.key}>
+              <Link href={r(`/dashboard/project/${projectId}/${item.key}`)} key={item.key}>
                 <Button
                   variant={pathname.endsWith(item.key) ? "default" : "ghost"}
                   className="justify-start group relative"
                   title={item.label}
                 >
-                  <item.icon className="w-4 h-4 lg:mr-2" />
+                  <item.icon className="w-4 h-4" />
                   <span className="hidden lg:inline-block absolute left-14 lg:static lg:left-auto bg-popover p-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 lg:opacity-100 lg:bg-transparent lg:p-0">
                     {item.label}
                   </span>
