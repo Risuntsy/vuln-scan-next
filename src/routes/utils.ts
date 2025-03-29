@@ -1,10 +1,8 @@
 import { Locale } from "#/i18n";
 
-
-
 interface RouteOptions {
-  params?: Record<string, string | number>;
-  query?: Record<string, string>;
+    params?: Record<string, string | number>;
+    query?: Record<string, string>;
 }
 
 /**
@@ -18,28 +16,28 @@ interface RouteOptions {
  * buildRoute(PROJECT_DETAIL_ROUTE, { params: { id: "123" }, query: { view: "details" } })
  */
 export function buildRoute(route: string, options?: RouteOptions): string {
-  let result = route;
+    let result = route;
 
-  // 替换路径参数
-  if (options?.params) {
-    Object.entries(options.params).forEach(([key, value]) => {
-      result = result.replace(`:${key}`, String(value));
-    });
-  }
-
-  // 添加查询参数
-  if (options?.query) {
-    const queryString = new URLSearchParams(options.query).toString();
-    if (queryString) {
-      result += `?${queryString}`;
+    // 替换路径参数
+    if (options?.params) {
+        Object.entries(options.params).forEach(([key, value]) => {
+            result = result.replace(`:${key}`, String(value));
+        });
     }
-  }
 
-  return result;
+    // 添加查询参数
+    if (options?.query) {
+        const queryString = new URLSearchParams(options.query).toString();
+        if (queryString) {
+            result += `?${queryString}`;
+        }
+    }
+
+    return result;
 }
 
 export function useLanguageRoute(lang: Locale) {
-  return function (route: string, options?: RouteOptions) {
-    return `/${lang}${buildRoute(route, options)}`;
-  };
+    return function (route: string, options?: RouteOptions) {
+        return `/${lang}${buildRoute(route, options)}`;
+    };
 }

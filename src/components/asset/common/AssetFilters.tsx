@@ -1,4 +1,3 @@
 export default function AssetFilters() {
-  return <div>AssetFilters</div>;
+    return <div>AssetFilters</div>;
 }
-

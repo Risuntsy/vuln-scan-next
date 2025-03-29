@@ -3,7 +3,7 @@ import { cookies, headers } from "next/headers";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+    return twMerge(clsx(inputs));
 }
 
 /**
@@ -12,7 +12,7 @@ export function cn(...inputs: ClassValue[]) {
  * @returns Promise<void>
  */
 export async function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -22,8 +22,8 @@ export async function sleep(ms: number): Promise<void> {
  * @returns 随机整数
  */
 export function randomInt(start: number, end?: number) {
-  if (end === undefined) {
-    [start, end] = [0, start];
-  }
-  return Math.floor(Math.random() * (end - start + 1)) + start;
+    if (end === undefined) {
+        [start, end] = [0, start];
+    }
+    return Math.floor(Math.random() * (end - start + 1)) + start;
 }

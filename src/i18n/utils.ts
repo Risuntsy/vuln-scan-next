@@ -4,24 +4,24 @@ import { locales, defaultLocale, Locale } from "./config";
 import { NextRequest } from "next/server";
 
 export function getLanguagesFromHeader(request: NextRequest): Locale {
-  return "zh-cn";
+    return "zh-cn";
 
-  // let languages: string[] = [];
+    // let languages: string[] = [];
 
-  // const acceptLanguage = (request.cookies.get("NEXT_LOCALE")?.value || request.headers.get("Accept-Language"))?.toLowerCase();
+    // const acceptLanguage = (request.cookies.get("NEXT_LOCALE")?.value || request.headers.get("Accept-Language"))?.toLowerCase();
 
-  // if (acceptLanguage) {
-  //   const negotiatorHeaders = { "accept-language": acceptLanguage };
-  //   languages = new Negotiator({ headers: negotiatorHeaders }).languages();
-  // }
+    // if (acceptLanguage) {
+    //   const negotiatorHeaders = { "accept-language": acceptLanguage };
+    //   languages = new Negotiator({ headers: negotiatorHeaders }).languages();
+    // }
 
-  // return match(languages, locales, defaultLocale);
+    // return match(languages, locales, defaultLocale);
 }
 
 export function extractLang(pathname: string) {
-  const lang = pathname.split("/")[1];
-  if (!lang) {
-    return;
-  }
-  return locales.find((locale) => locale === lang);
+    const lang = pathname.split("/")[1];
+    if (!lang) {
+        return;
+    }
+    return locales.find((locale) => locale === lang);
 }

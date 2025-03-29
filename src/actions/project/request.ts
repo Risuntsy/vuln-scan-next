@@ -1,1 +1,1 @@
-export const TEMP = ""
+export const TEMP = "";
